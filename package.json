@@ -1,0 +1,17 @@
+{
+  "name": "business-days",
+  "version": "1.0.0",
+  "description": "Checks whether a date is on a weekend or a holiday in Pennsylvania.",
+  "main": "src/index.js",
+  "dependencies": {
+    "date-holidays": "^1.8.3",
+    "dayjs-business-days": "^1.0.4",
+    "dayjs": "^1.9.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Simmons-Ritchie",
+  "license": "ISC"
+}
