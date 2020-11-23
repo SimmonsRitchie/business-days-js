@@ -16,5 +16,11 @@
     "test": "jest"
   },
   "author": "Daniel Simmons-Ritchie",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": [
+    "business",
+    "dates",
+    "holidays",
+    "dayjs"
+  ]
 }

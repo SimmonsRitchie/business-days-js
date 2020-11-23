@@ -1,4 +1,8 @@
-## business-days-js
+# business-days-js
+
+![npm](https://img.shields.io/npm/v/business-days-js)
+![npm bundle size](https://img.shields.io/bundlephobia/min/business-days-js)
+https://img.shields.io/npm/l/business-days-js
 
 Determines whether a given date is on a weekend or a public holiday in Pennsylvania. Uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
