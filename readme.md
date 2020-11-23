@@ -11,7 +11,7 @@ npm i business-days-js
 
 ### Usage
 
-isBusinessDay returns true if a provided date is on a business day in Pennsylvania, defined as being not a weekend and not a public holiday.
+isBusinessDay returns true if a provided date is on a business day in Pennsylvania, defined any day that is not a weekend or public holiday.
 
 Provided date can be a dayjs instance or a string formatted as 'YYYY-MM-DD'.
 
