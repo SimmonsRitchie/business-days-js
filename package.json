@@ -16,7 +16,8 @@
     "test": "jest"
   },
   "author": "Daniel Simmons-Ritchie",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": "simmonsritchie/business-days-js",
   "keywords": [
     "business",
     "dates",
