@@ -31,3 +31,5 @@ const bizDay = '2021-11-17';
 isBusinessDay(bizDay); // return true
 
 ```
+
+References
