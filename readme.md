@@ -24,10 +24,10 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const xmasDay = dayjs.tz('2016-12-25', "America/New_York");
-const businessDay = isBusinessDay(xmasDay); // return false
+isBusinessDay(xmasDay); // return false
 
 const presidentsDay = '2016-12-25';
-const businessDay = isBusinessDay(presidentsDay); // return false
+isBusinessDay(presidentsDay); // return false
 
 const bizDay = '2021-11-17';
 isBusinessDay(bizDay); // return true
