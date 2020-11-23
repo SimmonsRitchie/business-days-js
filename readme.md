@@ -1,6 +1,6 @@
 ## business-days-js
 
-Node package to etermines whether a given date is on a weekend or a public holiday in Pennsylvania.
+Determines whether a given date is on a weekend or a public holiday in Pennsylvania. Uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
 ### Install
 
@@ -11,7 +11,9 @@ npm i business-days-js
 
 ### Usage
 
-Check whether a date is a business day using either a dayjs instance or a string formatted as 'YYYY-MM-DD'.
+isBusinessDay returns true if a provided date is on a business day in Pennsylvania, defined as being not a weekend and not a public holiday.
+
+Provided date can be a dayjs instance or a string formatted as 'YYYY-MM-DD'.
 
 ```
 const {isBusinessDay} = require("../index")
@@ -32,4 +34,3 @@ isBusinessDay(bizDay); // return true
 
 ```
 
-References
