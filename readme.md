@@ -16,7 +16,7 @@ isBusinessDay returns true if a provided date is on a business day in Pennsylvan
 Provided date can be a dayjs instance or a string formatted as 'YYYY-MM-DD'.
 
 ```
-const {isBusinessDay} = require("../index")
+const { isBusinessDay } = require("src/index")
 dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
