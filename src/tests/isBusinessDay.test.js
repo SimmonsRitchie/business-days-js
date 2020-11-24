@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const {isBusinessDay} = require("../index")
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc') // dependent on utc plugin
