@@ -11,7 +11,7 @@ var hd = new Holidays()
 hd.init('US', 'pa')
 
 
-const isBusinessDay = (inputDate) => {
+export const isBusinessDay = (inputDate) => {
   /**
    * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
    * 
@@ -38,8 +38,3 @@ const isBusinessDay = (inputDate) => {
   }
   return true;
 }
-
-module.exports = {
-  isBusinessDay
-}
-
