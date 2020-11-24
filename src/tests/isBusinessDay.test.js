@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const {isBusinessDay} = require("../index")
+import {isBusinessDay} from "../index";
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc') // dependent on utc plugin
 const timezone = require('dayjs/plugin/timezone')
