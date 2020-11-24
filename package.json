@@ -1,7 +1,7 @@
 {
   "name": "business-days-js",
   "type": "module",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Checks whether a date is on a weekend or a holiday in Pennsylvania.",
   "source": "src/index.js",
   "main": "dist/index.js",
