@@ -20,7 +20,7 @@ Provided date can be a dayjs instance or a string formatted as 'YYYY-MM-DD'.
 
 ```
 const { isBusinessDay } = require("src/index")
-dayjs = require('dayjs');
+const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc')
 const timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)

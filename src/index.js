@@ -1,4 +1,4 @@
-dayjs = require('dayjs');
+const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc') // dependent on utc plugin
 const timezone = require('dayjs/plugin/timezone')
 var customParseFormat = require('dayjs/plugin/customParseFormat')
