@@ -2,18 +2,27 @@
   "name": "business-days-js",
   "version": "1.0.5",
   "description": "Checks whether a date is on a weekend or a holiday in Pennsylvania.",
-  "main": "src/index.js",
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
   "dependencies": {
     "date-holidays": "^1.8.3",
     "dayjs": "^1.9.6",
     "dayjs-business-days": "^1.0.4"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "eslint": "^7.14.0",
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "microbundle": "^0.12.4"
   },
   "scripts": {
-    "test": "jest"
+    "build": "microbundle --name getPkg",
+    "dev": "microbundle watch",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "watch": "jest --watch"
   },
   "author": "Daniel Simmons-Ritchie",
   "license": "MIT",
