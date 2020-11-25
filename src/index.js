@@ -81,7 +81,7 @@ const businessDays = (USState) => {
     },
     addDays(inputDate, days, { excludeInitialDate=true }={}) {
       /**
-       * Adds business days to a date and returns a new date.
+       * Adds business days to a date and returns a new date. First date is excluded from count by default.
        * 
        * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
        * @param {int} days - number of days to add to inputDate
@@ -102,6 +102,66 @@ const businessDays = (USState) => {
         }
       }
       return inputDate;
+    },
+    countDays(dateStart, dateEnd, { excludeInitialDate=true }={}) {
+      /**
+       * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
+       * 
+       * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
+       * @param {int} days - number of days to add to inputDate
+       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding. 
+       * @returns {dayjs} 
+       */
+
+      dateStart = validateDate(dateStart)
+      dateEnd = validateDate(dateEnd)
+      if (dateStart.isAfter(dateEnd)) {
+        throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`
+      }
+      let totalDays = 0;
+      let holidays = 0;
+      let holidayList = [];
+      let weekendDays = 0;
+      let weekdays = 0;
+      let holidaysOnWeekends = 0;
+      let businessDays = 0;
+      let dateCounter;
+      if (excludeInitialDate) {
+        dateCounter = dateStart.add(1, 'day')
+      }
+      while (!dateCounter.isSame(dateEnd, 'day')) {
+        totalDays++
+        console.log("Checking..", dateCounter.format("YYYY-MM-DD"))
+        const holidayObj = hd.isHoliday(dateCounter.toDate());
+        console.log(holidayObj)
+        const dayOfWeek = dateCounter.day();
+        if (holidayObj && holidayObj.type === "public") {
+          holidays++;
+          holidayList.push(holidayObj)
+        }
+        if (dayOfWeek === 0 | dayOfWeek === 6) {
+          weekendDays++;
+        }
+        if (!(dayOfWeek === 0 | dayOfWeek === 6)) {
+          weekdays++;
+        }
+        if ((dayOfWeek === 0 | dayOfWeek === 6) && (holidayObj && holidayObj.type === "public")) {
+          holidaysOnWeekends++;
+        }
+        if (!(dayOfWeek === 0 | dayOfWeek === 6) && !(holidayObj && holidayObj.type === "public")) {
+          businessDays++;
+        }
+        dateCounter = dateCounter.add(1, 'day')
+      }
+      return {
+        totalDays,
+        holidays,
+        holidayList,
+        weekdays,
+        weekendDays,
+        holidaysOnWeekends,
+        businessDays,
+      }
     }
   };
 };
