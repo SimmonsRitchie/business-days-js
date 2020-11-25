@@ -9,7 +9,7 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 const hd = new Holidays();
 
-const checkValidState = (stateAbbrv) => {
+const validateState = (stateAbbrv) => {
   /**
    * Throws error to the console if a US State abbreviation is invalid.
    *
@@ -23,6 +23,24 @@ const checkValidState = (stateAbbrv) => {
   }
 };
 
+const validateDate = (inputDate) => {
+  /**
+   * Checks that provided date is in valid format and returns date as a dayjs object.
+   * 
+   * @param {string|Dayjs|Date} inputDate - date to validate
+   * @returns {Dayjs} inputDate converted into Dayjs object.
+   */
+  try {
+    inputDate = dayjs.tz(inputDate, "YYYY-MM-DD", "America/New_York");
+  } catch (e) {
+    throw (
+      ("Could not parse date. Please provide either a dayjs object, native Date object, or a string formatted as 'YYYY-MM-DD'",
+      e)
+    );
+  }
+  return inputDate;
+}
+
 const businessDays = (USState) => {
   /**
    * Factory function that creates a businessDays object.
@@ -31,7 +49,7 @@ const businessDays = (USState) => {
    * @returns {str} true if date is a weekend or holiday
    */
   const cleanUSState = USState.toLowerCase();
-  checkValidState(cleanUSState);
+  validateState(cleanUSState);
   hd.init("US", cleanUSState);
   return {
     USState: cleanUSState,
@@ -45,19 +63,10 @@ const businessDays = (USState) => {
       /**
        * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
        *
-       * @param {dayjs} date as a dayjs object
-       * @returns {bool} true if date is a weekend or holiday
+       * @param {string|Dayjs|Date} inputDate - date to check.
+       * @returns {bool} true if inputDate is a weekend or holiday
        */
-
-      try {
-        inputDate = dayjs.tz(inputDate, "YYYY-MM-DD", "America/New_York");
-      } catch (e) {
-        throw (
-          ("Could not parse date. Please provide either a dayjs object, native Date object, or a string formatted as 'YYYY-MM-DD'",
-          e)
-        );
-      }
-
+      inputDate = validateDate(inputDate);
       // Check if Sun (0) or Sat (6)
       const dayOfWeek = inputDate.day();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -70,6 +79,30 @@ const businessDays = (USState) => {
       }
       return true;
     },
+    addDays(inputDate, days, { excludeInitialDate=true }={}) {
+      /**
+       * Adds business days to a date and returns a new date.
+       * 
+       * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
+       * @param {int} days - number of days to add to inputDate
+       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding. 
+       * @returns {dayjs} 
+       */
+      let counter = 0;
+      inputDate = validateDate(inputDate)
+      if (excludeInitialDate) {
+        inputDate = inputDate.add(1, 'day')
+      }
+      while (counter < days) {
+        if (this.check(inputDate)) {
+          counter++;
+        } 
+        if (counter < days) {
+          inputDate = inputDate.add(1, 'day')
+        }
+      }
+      return inputDate;
+    }
   };
 };
 export default businessDays;
