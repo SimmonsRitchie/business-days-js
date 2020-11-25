@@ -22,7 +22,8 @@
     "dev": "microbundle watch",
     "test": "jest",
     "coverage": "jest --coverage",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "pub": "npm run build && npm publish"
   },
   "author": "Daniel Simmons-Ritchie",
   "license": "MIT",
