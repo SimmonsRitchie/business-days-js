@@ -11,7 +11,7 @@ const hd = new Holidays();
 
 const checkValidState = (stateAbbrv) => {
   /**
-   * Logs warning to the console if a US State abbreviation is invalid
+   * Throws error to the console if a US State abbreviation is invalid.
    *
    * @param {str} stateAbbrv: State abbreviation. eg "pa"
    * @returns {undefined}
