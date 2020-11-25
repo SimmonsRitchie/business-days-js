@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/business-days-js)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/business-days-js)
 
-Determines whether a given date is on a weekend or a public holiday in Pennsylvania. Uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
+Determines whether a given date is on a weekend or a public holiday in the U.S. Uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
 ### Install
 
@@ -37,7 +37,7 @@ const bDays = businessDays("pa");
 const xmasDay = dayjs.tz('2016-12-25', "America/New_York");
 bDays.check(xmasDay); // return false
 
-const presidentsDay = '2016-12-25';
+const presidentsDay = new Date('2016-02-15 00:00:00 GMT-0500');
 bDays.check(presidentsDay); // return false
 
 const bizDay = '2021-11-17';
