@@ -88,3 +88,37 @@ test("Get holidays for 2020", () => {
   expect(Array.isArray(holidayList)).toBe(true);
 });
 
+test("Adding 5 business days to '2020-01-01' returns '2020-01-08", () => {
+  const addedDate = bDays.addDays("2020-01-01", 5)
+  const expectedDate = dayjs.tz("2020-01-08", DAYJS_TIMEZONE)
+  console.log("addedDate", addedDate.format("MM-DD-YYYY"))
+  expect(addedDate.isSame(expectedDate, "day")).toBe(true);
+})
+
+test("Adding 15 business days to '2020-01-01' returns '2020-01-23", () => {
+  const addedDate = bDays.addDays("2020-01-01", 15)
+  const expectedDate = dayjs.tz("2020-01-23", DAYJS_TIMEZONE)
+  console.log("addedDate", addedDate.format("MM-DD-YYYY"))
+  expect(addedDate.isSame(expectedDate, "day")).toBe(true);
+})
+
+test("Adding 15 business days to '2019-12-18' returns '2020-01-10", () => {
+  const addedDate = bDays.addDays("2019-12-18", 15)
+  const expectedDate = dayjs.tz("2020-01-10", DAYJS_TIMEZONE)
+  console.log("addedDate", addedDate.format("MM-DD-YYYY"))
+  expect(addedDate.isSame(expectedDate, "day")).toBe(true);
+})
+
+test("Adding 15 business days to '2019-12-18' doesn't return '2020-01-09", () => {
+  const addedDate = bDays.addDays("2019-12-18", 15)
+  const expectedDate = dayjs.tz("2020-01-09", DAYJS_TIMEZONE)
+  console.log("addedDate", addedDate.format("MM-DD-YYYY"))
+  expect(addedDate.isSame(expectedDate, "day")).toBe(false);
+})
+
+test("Adding 15 business days to '2019-12-18' with excludeInitialDate option to false returns '2020-01-09", () => {
+  const addedDate = bDays.addDays("2019-12-18", 15, {excludeInitialDate: false})
+  const expectedDate = dayjs.tz("2020-01-09", DAYJS_TIMEZONE)
+  console.log("addedDate", addedDate.format("MM-DD-YYYY"))
+  expect(addedDate.isSame(expectedDate, "day")).toBe(true);
+})
