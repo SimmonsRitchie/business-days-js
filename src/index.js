@@ -1,11 +1,12 @@
-const dayjs = require("dayjs");
-const utc = require("dayjs/plugin/utc"); // dependent on utc plugin
-const timezone = require("dayjs/plugin/timezone");
-var customParseFormat = require("dayjs/plugin/customParseFormat");
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"; // dependent on utc plugin
+import timezone from "dayjs/plugin/timezone";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import Holidays from "date-holidays";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
-var Holidays = require("date-holidays");
 
 const checkValidState = (stateAbbrv) => {
   /**

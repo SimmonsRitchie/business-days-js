@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
 import businessDays from "../index";
-const dayjs = require("dayjs");
-const utc = require("dayjs/plugin/utc"); // dependent on utc plugin
-const timezone = require("dayjs/plugin/timezone");
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"; // dependent on utc plugin
+import timezone from "dayjs/plugin/timezone";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 
 const bDays = businessDays("pa");
 const DAYJS_TIMEZONE = "America/Los_Angeles";
