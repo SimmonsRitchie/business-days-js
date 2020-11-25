@@ -7,21 +7,20 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 var Holidays = require("date-holidays");
 
-
 const checkValidState = (stateAbbrv) => {
   /**
    * Logs warning to the console if a US State abbreviation is invalid
-   * 
+   *
    * @param {str} stateAbbrv: State abbreviation. eg "pa"
    * @returns {undefined}
    */
   const hd = new Holidays();
-  const stateList = Object.keys(hd.getStates('US'))
-  const stateInList = stateList.includes(stateAbbrv.toUpperCase())
+  const stateList = Object.keys(hd.getStates("US"));
+  const stateInList = stateList.includes(stateAbbrv.toUpperCase());
   if (!stateInList) {
-    throw `${stateAbbrv} is not a US state.`
+    throw `${stateAbbrv} is not a US state.`;
   }
-}
+};
 
 const businessDays = (USState) => {
   /**
@@ -30,17 +29,17 @@ const businessDays = (USState) => {
    * @param {str} USState: U.S. state to determine holidays
    * @returns {str} true if date is a weekend or holiday
    */
-  const cleanUSState = USState.toLowerCase()
-  checkValidState(cleanUSState)
+  const cleanUSState = USState.toLowerCase();
+  checkValidState(cleanUSState);
   const hd = new Holidays();
   hd.init("US", cleanUSState);
   return {
     USState: cleanUSState,
-    getHolidays (year) {
+    getHolidays(year) {
       /**
        * Returns a list of all holidays for a given year.
        */
-       return hd.getHolidays(year)
+      return hd.getHolidays(year);
     },
     check(inputDate) {
       /**
