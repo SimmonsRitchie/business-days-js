@@ -7,6 +7,7 @@ import Holidays from "date-holidays";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
+const hd = new Holidays();
 
 const checkValidState = (stateAbbrv) => {
   /**
@@ -15,7 +16,6 @@ const checkValidState = (stateAbbrv) => {
    * @param {str} stateAbbrv: State abbreviation. eg "pa"
    * @returns {undefined}
    */
-  const hd = new Holidays();
   const stateList = Object.keys(hd.getStates("US"));
   const stateInList = stateList.includes(stateAbbrv.toUpperCase());
   if (!stateInList) {
@@ -32,7 +32,6 @@ const businessDays = (USState) => {
    */
   const cleanUSState = USState.toLowerCase();
   checkValidState(cleanUSState);
-  const hd = new Holidays();
   hd.init("US", cleanUSState);
   return {
     USState: cleanUSState,
