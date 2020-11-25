@@ -50,15 +50,13 @@ const businessDays = (USState) => {
        * @returns {bool} true if date is a weekend or holiday
        */
 
-      if (typeof inputDate === "string") {
-        try {
-          inputDate = dayjs.tz(inputDate, "YYYY-MM-DD", "America/New_York");
-        } catch (e) {
-          throw (
-            ("Could not parse date. Please provide either a dayjs object or a string formatted as 'YYYY-MM-DD'",
-            e)
-          );
-        }
+      try {
+        inputDate = dayjs.tz(inputDate, "YYYY-MM-DD", "America/New_York");
+      } catch (e) {
+        throw (
+          ("Could not parse date. Please provide either a dayjs object, native Date object, or a string formatted as 'YYYY-MM-DD'",
+          e)
+        );
       }
 
       // Check if Sun (0) or Sat (6)

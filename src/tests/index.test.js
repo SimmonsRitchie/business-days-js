@@ -15,6 +15,11 @@ test("Determine Dec 25, 2016 (Xmas day on Sunday) is not a business day because 
   expect(businessDay).toBe(false);
 });
 
+test("Determine Dec 25, 2016 (Xmas day on Sunday) is not a business day, provided as Date object", () => {
+  const businessDay = bDays.check(new Date('2016-12-25 00:00:00 GMT-0500'));
+  expect(businessDay).toBe(false);
+});
+
 test("Determine Dec 26, 2016 is not a business day because it's substitute day for Christmas", () => {
   const dummyDate = dayjs.tz("2016-12-26", DAYJS_TIMEZONE);
   const businessDay = bDays.check(dummyDate);
@@ -24,6 +29,11 @@ test("Determine Dec 26, 2016 is not a business day because it's substitute day f
 test("Determine Dec 27, 2016 is a business day because it's not a weekend or public holiday", () => {
   const dummyDate = dayjs.tz("2016-12-27", DAYJS_TIMEZONE);
   const businessDay = bDays.check(dummyDate);
+  expect(businessDay).toBe(true);
+});
+
+test("Determine Dec 27, 2016 is a business day because it's not a weekend or public holiday, provided as a Date object", () => {
+  const businessDay = bDays.check(new Date('2016-12-27 00:00:00 GMT-0500'));
   expect(businessDay).toBe(true);
 });
 
@@ -72,7 +82,6 @@ test("Throw an error if 'new zealand' is provided as a state", () => {
 
 test("Get holidays for 2020", () => {
   const holidayList = bDays.getHolidays(2020);
-  console.log(holidayList)
   expect(Array.isArray(holidayList)).toBe(true);
 });
 
