@@ -4,6 +4,8 @@ import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import Holidays from "date-holidays";
 
+// TODO: Create further
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
@@ -161,6 +163,7 @@ const businessDays = (USState) => {
         weekendDays,
         holidaysOnWeekends,
         businessDays,
+        nonBusinessDays: totalDays - businessDays,
       }
     }
   };
