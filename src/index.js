@@ -4,7 +4,7 @@ import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import Holidays from "date-holidays";
 
-// TODO: Create further
+// TODO: Add further tests of countDays factory method
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
