@@ -12,6 +12,7 @@ dayjs.extend(customParseFormat);
 const bDays = businessDays("pa");
 const DAYJS_TIMEZONE = "America/Los_Angeles";
 
+// CHECK DAYS
 test("Determine Dec 25, 2016 (Xmas day on Sunday) is not a business day because it's a weekend", () => {
   const dummyDate = dayjs.tz("2016-12-25", DAYJS_TIMEZONE);
   const businessDay = bDays.check(dummyDate);
@@ -88,6 +89,7 @@ test("Get holidays for 2020", () => {
   expect(Array.isArray(holidayList)).toBe(true);
 });
 
+// ADD DAYS
 test("Adding 5 business days to '2020-01-01' returns '2020-01-08", () => {
   const addedDate = bDays.addDays("2020-01-01", 5)
   const expectedDate = dayjs.tz("2020-01-08", DAYJS_TIMEZONE)
@@ -118,9 +120,15 @@ test("Adding 15 business days to '2019-12-18' with excludeInitialDate option to 
   expect(addedDate.isSame(expectedDate, "day")).toBe(true);
 })
 
-// TODO: Add new tests for count days method
-// test("Count days between '2019-12-18' to '2020-12-19 returns 1", () => {
-//   const addedDate = bDays.addDays("2019-12-18", 15, {excludeInitialDate: false})
-//   const expectedDate = dayjs.tz("2020-01-09", DAYJS_TIMEZONE)
-//   expect(addedDate.isSame(expectedDate, "day")).toBe(true);
-// })
+// COUNT DAYS
+test("Count days between '2020-12-20' to '2020-12-21' returns 1 total days", () => {
+  const counts = bDays.countDays("2020-12-20", "2020-12-21")
+  const expectedTotalDays = 1
+  expect(counts.totalDays).toBe(expectedTotalDays);
+})
+
+test("Count days between '2020-12-20' to '2020-12-21' with excludeInitialDate set to false returns 2 total days", () => {
+  const counts = bDays.countDays("2020-12-20", "2020-12-21", {excludeInitialDate: false})
+  const expectedTotalDays = 2
+  expect(counts.totalDays).toBe(expectedTotalDays);
+})

@@ -114,7 +114,6 @@ const businessDays = (USState) => {
        * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding. 
        * @returns {dayjs} 
        */
-
       dateStart = validateDate(dateStart)
       dateEnd = validateDate(dateEnd)
       if (dateStart.isAfter(dateEnd)) {
@@ -127,11 +126,11 @@ const businessDays = (USState) => {
       let weekdays = 0;
       let holidaysOnWeekends = 0;
       let businessDays = 0;
-      let dateCounter;
+      let dateCounter = dateStart;
       if (excludeInitialDate) {
         dateCounter = dateStart.add(1, 'day')
       }
-      while (!dateCounter.isSame(dateEnd, 'day')) {
+      while (!dateCounter.isSame(dateEnd.add(1, 'day'), 'day')) {
         totalDays++
         console.log("Checking..", dateCounter.format("YYYY-MM-DD"))
         const holidayObj = hd.isHoliday(dateCounter.toDate());
