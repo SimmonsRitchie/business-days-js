@@ -83,7 +83,7 @@ const businessDays = (USState) => {
     },
     addDays(inputDate, days, { excludeInitialDate=true }={}) {
       /**
-       * Adds business days to a date and returns a new date. First date is excluded from count by default.
+       * Adds business days to a date and returns a new date as a DayJS object. First date is excluded from count by default.
        * 
        * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
        * @param {int} days - number of days to add to inputDate
