@@ -13,7 +13,7 @@ npm i business-days-js
 
 ### Usage
 
-Inititalize businessDays object with a U.S. state in two-letter format.
+First inititalize businessDays object with a U.S. state in two-letter format.
 
 ```
 import businessDays from "business-days-js";
@@ -21,7 +21,29 @@ import businessDays from "business-days-js";
 const bDays = businessDays("pa");
 ```
 
-Check whether a date is a business day. Works with native Date object, dayjs instance, or a string formatted as 'YYYY-MM-DD'.
+##### Check business day
+
+To check whether a native Date object is a business day:
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa");
+const presidentsDay = new Date("2016-02-15 00:00:00 GMT-0500");
+bDays.check(presidentsDay); // returns false
+
+```
+Dates can also be provided as a string formatted as "YYYY-MM-DD":
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa");
+const bizDay = "2021-11-17";
+bDays.check(bizDay); // returns true
+```
+
+Date can also be provided as a DayJS object:
 
 ```
 import businessDays from "business-days-js";
@@ -32,14 +54,26 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const bDays = businessDays("pa");
-
 const xmasDay = dayjs.tz("2016-12-25", "America/New_York");
-console.log(bDays.check(xmasDay)); // returns false
-
-const presidentsDay = new Date("2016-02-15 00:00:00 GMT-0500");
-console.log(bDays.check(presidentsDay)); // returns false
-
-const bizDay = "2021-11-17";
-console.log(bDays.check(bizDay)); // returns true
+bDays.check(xmasDay); // returns false
 ```
 
+##### Add business days
+
+Add a specified number of business days to a date to get a new date. The new date is represented as a DayJS object.
+
+```
+import businessDays from "business-days-js";
+
+const startDate = new Date("2020-12-20 00:00:00 GMT-0500");
+bDays.addDays(startDate, 5) // returns a DayJS object representing Dec 28, 2020.
+```
+
+As with other methods, dates can be provided as a string formatted as "YYYY-MM-DD" or as a DayJS object:
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa");
+const newDate = bDays.addDays("2020-12-20", 5) // returns a DayJS object representing Dec 28, 2020.
+```
