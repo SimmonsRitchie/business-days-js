@@ -50,11 +50,19 @@ test("Determine Dec 25, 2016 (Xmas day on Sunday) is not a business day, provide
   expect(businessDay).toBe(false);
 });
 
+test("Determine Fri, July 3, 2020 is not a business day because it's substitute day for Independence Day", () => {
+  const dummyDate = dayjs.tz("2020-07-03", DAYJS_TIMEZONE);
+  const businessDay = bDays.check(dummyDate);
+  expect(businessDay).toBe(false);
+});
+
 test("Determine Dec 26, 2016 is not a business day because it's substitute day for Christmas", () => {
   const dummyDate = dayjs.tz("2016-12-26", DAYJS_TIMEZONE);
   const businessDay = bDays.check(dummyDate);
   expect(businessDay).toBe(false);
 });
+
+
 
 test("Determine Dec 27, 2016 is a business day because it's not a weekend or public holiday", () => {
   const dummyDate = dayjs.tz("2016-12-27", DAYJS_TIMEZONE);
