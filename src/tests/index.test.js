@@ -121,14 +121,92 @@ test("Adding 15 business days to '2019-12-18' with excludeInitialDate option to 
 })
 
 // COUNT DAYS
-test("Count days between '2020-12-20' to '2020-12-21' returns 1 total days", () => {
-  const counts = bDays.countDays("2020-12-20", "2020-12-21")
-  const expectedTotalDays = 1
-  expect(counts.totalDays).toBe(expectedTotalDays);
+test("Count days between '2020-12-20' to '2020-12-20' returns 0 or an empty list for all tallies", () => {
+  const counts = bDays.countDays("2020-12-20", "2020-12-20")
+  const expectedCounts = {
+    totalDays: 0,
+    holidays: 0,
+    holidayList: [],
+    weekdays: 0,
+    weekendDays: 0,
+    holidaysOnWeekends: 0,
+    businessDays: 0,
+    nonBusinessDays: 0
+  }
+  expect(counts).toEqual(expectedCounts);
 })
 
-test("Count days between '2020-12-20' to '2020-12-21' with excludeInitialDate set to false returns 2 total days", () => {
-  const counts = bDays.countDays("2020-12-20", "2020-12-21", {excludeInitialDate: false})
-  const expectedTotalDays = 2
-  expect(counts.totalDays).toBe(expectedTotalDays);
+test("Count days between '2020-12-20' to '2020-12-21' returns expected tallies", () => {
+  const counts = bDays.countDays("2020-12-20", "2020-12-21")
+  const expectedCounts = {
+    totalDays: 1,
+    holidays: 0,
+    holidayList: [],
+    weekdays: 1,
+    weekendDays: 0,
+    holidaysOnWeekends: 0,
+    businessDays: 1,
+    nonBusinessDays: 0
+  }
+  expect(counts).toEqual(expectedCounts);
 })
+
+test("Count days between '2020-12-20' to '2020-12-21' with excludeInitialDate set to false returns expected tallies", () => {
+  // Sunday Dec 20, 2020 to Monday Dec 21, 2020
+  const counts = bDays.countDays("2020-12-20", "2020-12-21", {excludeInitialDate: false})
+  const expectedCounts = {
+    totalDays: 2,
+    holidays: 0,
+    holidayList: [],
+    weekdays: 1,
+    weekendDays: 1,
+    holidaysOnWeekends: 0,
+    businessDays: 1,
+    nonBusinessDays: 1
+  }
+  expect(counts).toEqual(expectedCounts);
+})
+
+
+test("Count days between '2020-12-23' to '2020-12-26' returns expected tallies", () => {
+  // Sunday Dec 23, 2020 to Monday Dec 26, 2020
+  const counts = bDays.countDays("2020-12-23", "2020-12-26")
+  const { holidayList, ...newCounts} = counts;
+  const expectedCounts = {
+    totalDays: 3,
+    holidays: 1,
+    weekdays: 2,
+    weekendDays: 1,
+    holidaysOnWeekends: 0,
+    businessDays: 1,
+    nonBusinessDays: 2
+  }
+  expect(newCounts).toEqual(expectedCounts);
+  expect(holidayList.length).toBe(1);
+  expect(holidayList[0].name).toBe("Christmas Day");
+})
+
+test("Count days between '2020-12-23' to '2021-01-02' returns expected tallies", () => {
+  // Sunday Dec 23, 2020 to Sat Jan 2, 2020
+  const counts = bDays.countDays("2020-12-23", "2021-01-02")
+  const { holidayList, ...newCounts} = counts;
+  const expectedCounts = {
+    totalDays: 10,
+    holidays: 2,
+    weekdays: 7,
+    weekendDays: 3,
+    holidaysOnWeekends: 0,
+    businessDays: 5,
+    nonBusinessDays: 5
+  }
+  expect(newCounts).toEqual(expectedCounts);
+  expect(holidayList.length).toBe(2);
+})
+
+
+
+test("Throw an error if countDays recieves a start date that is after an end date", () => {
+  expect(() => {
+    bDays.countDays("2020-12-21", "2020-12-20", {excludeInitialDate: false})
+  }).toThrow();
+});
