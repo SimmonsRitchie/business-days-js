@@ -12,6 +12,32 @@ dayjs.extend(customParseFormat);
 const bDays = businessDays("pa");
 const DAYJS_TIMEZONE = "America/Los_Angeles";
 
+
+// INIT
+test("Throw an error if invalid value is provided as a state", () => {
+  expect(() => {
+    businessDays("New Zealand") 
+  }).toThrow();
+});
+
+// GET HOLIDAYS
+
+test("getHolidays returns an array", () => {
+  const holidayList = bDays.getHolidays(2020);
+  expect(Array.isArray(holidayList)).toBe(true);
+});
+
+
+test("getHolidays excludes Flag Day, Christmas Day, and Presidents Day if they're excluded on init", () => {
+  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Flag Day", "Christmas Day", "Presidents' Day"]});
+  const holidayList = bDaysFiltered.getHolidays(2020);
+  const holidayListClean = holidayList.map(item => item.name.toLowerCase())
+  expect(holidayListClean).not.toContain("flag day");
+  expect(holidayListClean).not.toContain("christmas day");
+  expect(holidayListClean).not.toContain("presidents' day");
+  expect(holidayListClean).toContain("labor day");
+});
+
 // CHECK DAYS
 test("Determine Dec 25, 2016 (Xmas day on Sunday) is not a business day because it's a weekend", () => {
   const dummyDate = dayjs.tz("2016-12-25", DAYJS_TIMEZONE);
@@ -78,16 +104,25 @@ test("Throw an error if input date is formatted as '27-12-2016' is provided", ()
   }).toThrow();
 });
 
-test("Throw an error if 'new zealand' is provided as a state", () => {
-  expect(() => {
-    businessDays("New Zealand") 
-  }).toThrow();
-});
+test("Determine '2020-12-25' is a business day if Christmas Day is set as not a public holiday", () => {
+  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Christmas Day"]});
+  const xmasDay = dayjs.tz("2020-12-25", DAYJS_TIMEZONE);
+  const businessDay = bDaysFiltered.check(xmasDay);
+  expect(businessDay).toBe(true);
+})
 
-test("Get holidays for 2020", () => {
-  const holidayList = bDays.getHolidays(2020);
-  expect(Array.isArray(holidayList)).toBe(true);
-});
+test("Determine '2019-06-14' (Flag Day) is not a business day", () => {
+  const dummyDate = dayjs.tz("2019-06-14", DAYJS_TIMEZONE);
+  const businessDay = bDays.check(dummyDate);
+  expect(businessDay).toBe(false);
+})
+
+test("Determine '2019-06-14' (Flag Day) is a business day if Flag Day is excluded from holiday list", () => {
+  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Flag Day"]});
+  const flagDay = dayjs.tz("2019-06-14", DAYJS_TIMEZONE);
+  const businessDay = bDaysFiltered.check(flagDay);
+  expect(businessDay).toBe(true);
+})
 
 // ADD DAYS
 test("Adding 5 business days to '2020-01-01' returns '2020-01-08", () => {
@@ -210,3 +245,4 @@ test("Throw an error if countDays recieves a start date that is after an end dat
     bDays.countDays("2020-12-21", "2020-12-20", {excludeInitialDate: false})
   }).toThrow();
 });
+

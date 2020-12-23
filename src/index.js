@@ -4,14 +4,12 @@ import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import Holidays from "date-holidays";
 
-// TODO: Add further tests of countDays factory method
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
-const hd = new Holidays();
 
-const validateState = (stateAbbrv) => {
+
+const validateState = (stateAbbrv, hd) => {
   /**
    * Throws error to the console if a US State abbreviation is invalid.
    *
@@ -23,7 +21,7 @@ const validateState = (stateAbbrv) => {
   if (!stateInList) {
     throw `${stateAbbrv} is not a US state.`;
   }
-};
+}
 
 const validateDate = (inputDate) => {
   /**
@@ -43,23 +41,68 @@ const validateDate = (inputDate) => {
   return inputDate;
 }
 
-const businessDays = (USState) => {
+const getHolidayRule = (hd, holName, year) => {
+  /**
+   * Gets the date-holiday defined 'rule' for a specific holiday. Returns empty string if name isn't found.
+   * 
+   * @param {Holidays} hd - Holidays instance
+   * @param {string} holName - name of holiday. eg. "Christmas Day"
+   * @returns {string} 
+   */
+  const holList = hd.getHolidays(year)
+  const hol = holList.find(item => {
+    return item.name.toLowerCase() === holName.toLowerCase()})
+  if (hol) {
+    return hol.rule;
+  }
+  return "";
+}
+
+const filterHolidays = (hd, arrHols) => {
+  /**
+   * Takes a Holidays instance and list of holidays and sets each holiday's type as 'optional' in the instance.
+   * 
+   * @param {Holidays} hd - Holidays instance
+   * @param {arr} arrHols - array of holiday names. eg ["Christmas Day", "New Year's Day"]
+   * @returns {undefined} 
+
+   */
+  arrHols.forEach(holName => {
+    const rule = getHolidayRule(hd, holName, "2020")
+    if (rule) {
+      hd.setHoliday(rule, {name: holName, type: "optional"})
+    }
+  })
+}
+
+const businessDays = (USState, {excludeHolidays = []} = {}) => {
   /**
    * Factory function that creates a businessDays object.
    *
-   * @param {str} USState: U.S. state to determine holidays
+   * @param {str} USState – U.S. state to determine holidays
    * @returns {str} true if date is a weekend or holiday
    */
   const cleanUSState = USState.toLowerCase();
-  validateState(cleanUSState);
+  const hd = new Holidays();
+  validateState(cleanUSState, hd);
   hd.init("US", cleanUSState);
+  if (excludeHolidays.length > 0) {
+    filterHolidays(hd, excludeHolidays)
+  }
   return {
+    hd,
     USState: cleanUSState,
     getHolidays(year) {
       /**
-       * Returns a list of all holidays for a given year.
+       * Returns an array of all public holidays for a given year.
+       * 
+       * @param {string} year – year to get holidays for
+       * @returns {arr}
        */
-      return hd.getHolidays(year);
+      const publicHols = hd.getHolidays(year).filter(item => item.type === "public")
+      return publicHols;
+      // const publicHols = hols.filter(item => item.type === "public")
+      // return publicHols;
     },
     check(inputDate) {
       /**
@@ -75,7 +118,7 @@ const businessDays = (USState) => {
         return false;
       }
       // Check if public holiday or substitute public holiday
-      const holidayObj = hd.isHoliday(inputDate.toDate());
+      const holidayObj = this.hd.isHoliday(inputDate.toDate());
       if (holidayObj && holidayObj.type === "public") {
         return false;
       }
@@ -132,9 +175,7 @@ const businessDays = (USState) => {
       }
       while (!dateCounter.isSame(dateEnd.add(1, 'day'), 'day')) {
         totalDays++
-        console.log("Checking..", dateCounter.format("YYYY-MM-DD"))
-        const holidayObj = hd.isHoliday(dateCounter.toDate());
-        console.log(holidayObj)
+        const holidayObj = this.hd.isHoliday(dateCounter.toDate());
         const dayOfWeek = dateCounter.day();
         if (holidayObj && holidayObj.type === "public") {
           holidays++;
@@ -164,7 +205,7 @@ const businessDays = (USState) => {
         businessDays,
         nonBusinessDays: totalDays - businessDays,
       }
-    }
+    },
   };
 };
 export default businessDays;
