@@ -238,7 +238,12 @@ test("Count days between '2020-12-23' to '2021-01-02' returns expected tallies",
   expect(holidayList.length).toBe(2);
 })
 
-
+test("Count days between '2020-01-01' to '2020-12-31' with Christmas and Memorial Day excluded returns an array of 10 holidays", () => {
+  // Sunday Dec 23, 2020 to Sat Jan 2, 2020
+  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Christmas Day", "Memorial Day"]})
+  const counts = bDaysFiltered.countDays("2020-01-01", "2020-12-31", {excludeInitialDate: false})
+  expect(counts.holidayList.length).toBe(10);
+})
 
 test("Throw an error if countDays recieves a start date that is after an end date", () => {
   expect(() => {
