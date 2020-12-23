@@ -20,7 +20,7 @@ First inititalize businessDays object with a U.S. state in two-letter format:
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays("pa"); // init for Pennsylvania
 ```
 
 ##### Check business day
