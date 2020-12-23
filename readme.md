@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/business-days-js)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/business-days-js)
 
-Determines whether a given date and time is on a weekend or a public holiday in the U.S. This package can also add business days to a specified date to calculate a new date.
+Determines whether a given date and time is on a weekend or a public holiday in the U.S. Can also add business days to a specified date to calculate a new date.
 
 This package uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
@@ -45,7 +45,7 @@ const bizDay = "2021-11-17"; // Wednesday, Nov 17, 2021
 bDays.check(bizDay); // returns true
 ```
 
-Or dates can be provided as a DayJS object:
+Or dates can be provided as a Day.js object:
 
 ```
 import businessDays from "business-days-js";
@@ -58,13 +58,13 @@ bDays.check(xmasDay); // returns false
 
 ##### Add business days 
 
-Add a specified number of business days to a date to calculate a new date. The returned date is a DayJS object.
+Add a specified number of business days to a date to calculate a new date. The returned date is a Day.js object.
 
 ```
 import businessDays from "business-days-js";
 
 const startDate = new Date("2020-12-20 00:00:00 GMT-0500");
-bDays.addDays(startDate, 5) // returns a DayJS object representing Dec 28, 2020.
+bDays.addDays(startDate, 5) // returns a Day.js object representing Dec 28, 2020.
 ```
 
 As with other methods, dates can be provided as a DayJS object or a string formatted as "YYYY-MM-DD":
@@ -73,7 +73,7 @@ As with other methods, dates can be provided as a DayJS object or a string forma
 import businessDays from "business-days-js";
 
 const bDays = businessDays("pa");
-const newDate = bDays.addDays("2020-12-20", 5) // returns a DayJS object representing Dec 28, 2020.
+const newDate = bDays.addDays("2020-12-20", 5) // returns a Day.js object representing Dec 28, 2020.
 ```
 
 ##### Count days
@@ -97,3 +97,34 @@ import businessDays from "business-days-js";
 const bDays = businessDays("pa");
 bDays.countDays("2020-12-20", "2020-12-28", {excludeInitialDate: false})
 ```
+
+##### Get list of public holidays
+
+To get a list of public holidays in a specific year:
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa");
+bDays.getHolidays("2020")
+
+```
+
+### Advanced Usage
+
+##### Customize public holidays
+
+You can exclude specific public holidays from businessDays default list of public holidays. Simply initialize a businessDays object with a list of holidays to exclude.
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa", {excludeHolidays: ["Flag Day", "Presidents' Day"]});
+
+// Flag Day and Presidents' Day will now be considered business days if they fall during the work week.
+const flagDay = new Date("2019-06-14 00:00:00 GMT-0500")
+const presDay = new Date("2020-02-17 00:00:00 GMT-0500")
+bDays.check(flagDay) // returns true
+bDays.check(presDay) // returns true
+```
+
