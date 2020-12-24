@@ -80,8 +80,9 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
   /**
    * Factory function that creates a businessDays object.
    *
-   * @param {str} USState – U.S. state to determine holidays. Defaults to "USA"
-   * @returns {str} true if date is a weekend or holiday
+   * @param {str} options.state – U.S. state to determine holidays. Eg. "pa". Defaults to "USA"
+   * @param {arr} options.excludeHolidays – list of strings with holiday names to exclude from being considered as non-business days.
+   * @returns {businessDays} businessDays object
    */
   const hd = new Holidays();
   validateState(state, hd);
