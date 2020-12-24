@@ -24,7 +24,8 @@
     "coverage": "jest --coverage",
     "watch": "jest --watch",
     "pub": "npm run build && npm publish",
-    "pre": "npm version prerelease --preid=alpha"
+    "pre": "npm version prerelease --preid=alpha",
+    "pre-pub": "npm run build && npm publish --tag alpha"
   },
   "author": "Daniel Simmons-Ritchie",
   "license": "MIT",
