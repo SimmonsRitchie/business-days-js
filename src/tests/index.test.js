@@ -14,14 +14,25 @@ const DAYJS_TIMEZONE = "America/Los_Angeles";
 
 
 // INIT
-test("Throw an error if invalid value is provided as a state", () => {
+test("Initializing businessDays without a state abbreviation returns object", () => {
+  const bDaysObj = businessDays();
+  expect(typeof bDaysObj === 'object').toBe(true);
+});
+
+test("Initializing businessDays with a state abbreviation returns object", () => {
+  const bDaysObj = businessDays("pa");
+  expect(typeof bDaysObj === 'object').toBe(true);
+});
+
+test("Initializing businessDays with an invalid state abbreviation throws an error", () => {
   expect(() => {
-    businessDays("New Zealand") 
+    businessDays("NZ") 
   }).toThrow();
 });
 
-// GET HOLIDAYS
 
+
+// GET HOLIDAYS
 test("getHolidays returns an array", () => {
   const holidayList = bDays.getHolidays(2020);
   expect(Array.isArray(holidayList)).toBe(true);
@@ -36,6 +47,19 @@ test("getHolidays excludes Flag Day, Christmas Day, and Presidents Day if they'r
   expect(holidayListClean).not.toContain("christmas day");
   expect(holidayListClean).not.toContain("presidents' day");
   expect(holidayListClean).toContain("labor day");
+});
+
+
+test("getHolidays returns 11 public holidays in 2020 when businessDays is initalized without state abbreviation", () => {
+  const bDaysObj = businessDays();
+  const holidayList = bDaysObj.getHolidays(2020);
+  expect(holidayList.length).toBe(11);
+});
+
+test("getHolidays returns 12 public holidays in 2020 when businessDays is initalized with 'pa'", () => {
+  const bDaysObj = businessDays("pa");
+  const holidayList = bDaysObj.getHolidays(2020);
+  expect(holidayList.length).toBe(12);
 });
 
 // CHECK DAYS

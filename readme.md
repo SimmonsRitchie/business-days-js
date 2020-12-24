@@ -15,13 +15,21 @@ npm i business-days-js
 
 ### Usage
 
-First inititalize businessDays object with a U.S. state in two-letter format:
+First inititalize a businessDays object:
 
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa"); // init for Pennsylvania
+const bDays = businessDays();
 ```
+By default, businessDays treats 10 U.S. public holidays as non-business days. To use state-specific public holidays, instead initialize businessDays with an appropriate two-letter state abbreviation:
+
+```
+import businessDays from "business-days-js";
+
+const bDays = businessDays("pa"); // uses public holidays for Pennsylvania
+```
+Consult 'advanced usage' for more information about customizing public holidays.
 
 ##### Check business day
 
@@ -100,7 +108,7 @@ bDays.countDays("2020-12-20", "2020-12-28", {excludeInitialDate: false})
 
 ##### Get list of public holidays
 
-To get a list of public holidays in a specific year:
+To get a list of public holidays for a specific year:
 
 ```
 import businessDays from "business-days-js";
@@ -128,3 +136,21 @@ bDays.check(flagDay) // returns true
 bDays.check(presDay) // returns true
 ```
 
+### Note about public holidays
+
+By default, when inititalized without a state abbreviation, businessDays treats 10 U.S. public holidays as non-business days:
+
+- New Year's Day
+- Martin Luther King Jr. Day
+- Washington's Birthday
+- Memorial Day
+- Independence Day
+- Labor Day
+- Columbus Day
+- Veterans Day
+- Thanksgiving Day
+- Christmas Day
+
+If those days fall on a weekend, subsitution days are used based on rules defined by [date-holidays](https://www.npmjs.com/package/date-holidays). For instance, if Christmas Day (Dec 25) falls on a Sunday, then Monday will be assumed to be a public holiday. If Christmas Day falls on a Saturday than Friday will be assumed to be a public holiday.
+
+For more information about holiday rules, please consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).
