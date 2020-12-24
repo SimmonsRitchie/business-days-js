@@ -76,16 +76,16 @@ const filterHolidays = (hd, arrHols) => {
   })
 }
 
-const businessDays = (USState="USA", {excludeHolidays = []} = {}) => {
+const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
   /**
    * Factory function that creates a businessDays object.
    *
    * @param {str} USState – U.S. state to determine holidays. Defaults to "USA"
    * @returns {str} true if date is a weekend or holiday
    */
-  const cleanUSState = USState.toLowerCase();
   const hd = new Holidays();
-  validateState(cleanUSState, hd);
+  validateState(state, hd);
+  const cleanUSState = state.toLowerCase();
   hd.init("US", cleanUSState);
   if (excludeHolidays.length > 0) {
     filterHolidays(hd, excludeHolidays)
