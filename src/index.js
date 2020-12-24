@@ -17,6 +17,7 @@ const validateState = (stateAbbrv, hd) => {
    * @returns {undefined}
    */
   const stateList = Object.keys(hd.getStates("US"));
+  stateList.push("USA")
   const stateInList = stateList.includes(stateAbbrv.toUpperCase());
   if (!stateInList) {
     throw `${stateAbbrv} is not a US state.`;
@@ -75,11 +76,11 @@ const filterHolidays = (hd, arrHols) => {
   })
 }
 
-const businessDays = (USState, {excludeHolidays = []} = {}) => {
+const businessDays = (USState="USA", {excludeHolidays = []} = {}) => {
   /**
    * Factory function that creates a businessDays object.
    *
-   * @param {str} USState – U.S. state to determine holidays
+   * @param {str} USState – U.S. state to determine holidays. Defaults to "USA"
    * @returns {str} true if date is a weekend or holiday
    */
   const cleanUSState = USState.toLowerCase();
