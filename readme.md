@@ -27,7 +27,7 @@ By default, businessDays treats 10 U.S. public holidays as non-business days. To
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa"); // uses public holidays for Pennsylvania
+const bDays = businessDays({state: "pa"}); // uses public holidays for Pennsylvania
 ```
 Consult 'advanced usage' for more information about customizing public holidays.
 
@@ -38,7 +38,7 @@ To check whether a native Date object is a business day:
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 const presidentsDay = new Date("2016-02-15 00:00:00 GMT-0500"); // 12 a.m. on Feb. 15, 2016 (EST)
 bDays.check(presidentsDay); // returns false
 
@@ -48,7 +48,7 @@ Dates can also be provided as a string formatted as "YYYY-MM-DD":
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 const bizDay = "2021-11-17"; // Wednesday, Nov 17, 2021
 bDays.check(bizDay); // returns true
 ```
@@ -59,7 +59,7 @@ Or dates can be provided as a Day.js object:
 import businessDays from "business-days-js";
 import dayjs from "dayjs";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 const xmasDay = dayjs("2020-12-25 00:00:00 GMT-0500"); // 12 a.m. on Dec 25, 2020 (EST)
 bDays.check(xmasDay); // returns false
 ```
@@ -80,7 +80,7 @@ As with other methods, dates can be provided as a DayJS object or a string forma
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 const newDate = bDays.addDays("2020-12-20", 5) // returns a Day.js object representing Dec 28, 2020.
 ```
 
@@ -91,7 +91,7 @@ To return an object with a tally of total days, business days, weekends, weekday
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 bDays.countDays("2020-12-20", "2020-12-28") // returns an object
 ```
 
@@ -102,19 +102,20 @@ To include the start date in the tallies:
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 bDays.countDays("2020-12-20", "2020-12-28", {excludeInitialDate: false})
 ```
 
 ##### Get list of public holidays
 
-To get a list of public holidays for a specific year:
+To get a list of public holidays for a specific year with the dates they end and start:
 
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa");
-bDays.getHolidays("2020")
+const bDays = businessDays({state: "pa"});
+// returns an array of objects with data on Pennsylvania public holidays in 2020
+bDays.getHolidays("2020") 
 
 ```
 
@@ -127,7 +128,7 @@ You can exclude specific public holidays from businessDays default list of publi
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays("pa", {excludeHolidays: ["Flag Day", "Presidents' Day"]});
+const bDays = businessDays({state: "pa", excludeHolidays: ["Flag Day", "Presidents' Day"]});
 
 // Flag Day and Presidents' Day will now be considered business days if they fall during the work week.
 const flagDay = new Date("2019-06-14 00:00:00 GMT-0500")
@@ -153,4 +154,4 @@ By default, when inititalized without a state abbreviation, businessDays treats 
 
 If those days fall on a weekend, subsitution days are used based on rules defined by [date-holidays](https://www.npmjs.com/package/date-holidays). For instance, if Christmas Day (Dec 25) falls on a Sunday, then Monday will be assumed to be a public holiday. If Christmas Day falls on a Saturday than Friday will be assumed to be a public holiday.
 
-For more information about holiday rules, please consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).
+For more information about holiday rules, consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).

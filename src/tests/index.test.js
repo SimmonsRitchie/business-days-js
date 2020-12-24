@@ -9,7 +9,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-const bDays = businessDays("pa");
+const bDays = businessDays({state: "pa"});
 const DAYJS_TIMEZONE = "America/Los_Angeles";
 
 
@@ -19,14 +19,19 @@ test("Initializing businessDays without a state abbreviation returns object", ()
   expect(typeof bDaysObj === 'object').toBe(true);
 });
 
+test("Initializing businessDays without a state abbreviation but with excludeHolidays option returns object", () => {
+  const bDaysObj = businessDays({excludeHolidays: ["Washington's Birthday"]});
+  expect(typeof bDaysObj === 'object').toBe(true);
+});
+
 test("Initializing businessDays with a state abbreviation returns object", () => {
-  const bDaysObj = businessDays("pa");
+  const bDaysObj = businessDays({state: "pa"});
   expect(typeof bDaysObj === 'object').toBe(true);
 });
 
 test("Initializing businessDays with an invalid state abbreviation throws an error", () => {
   expect(() => {
-    businessDays("NZ") 
+    businessDays({state: "NZ"}) 
   }).toThrow();
 });
 
@@ -40,7 +45,7 @@ test("getHolidays returns an array", () => {
 
 
 test("getHolidays excludes Flag Day, Christmas Day, and Presidents Day if they're excluded on init", () => {
-  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Flag Day", "Christmas Day", "Presidents' Day"]});
+  const bDaysFiltered = businessDays({state: "pa", excludeHolidays: ["Flag Day", "Christmas Day", "Presidents' Day"]});
   const holidayList = bDaysFiltered.getHolidays(2020);
   const holidayListClean = holidayList.map(item => item.name.toLowerCase())
   expect(holidayListClean).not.toContain("flag day");
@@ -57,7 +62,7 @@ test("getHolidays returns 11 public holidays in 2020 when businessDays is inital
 });
 
 test("getHolidays returns 12 public holidays in 2020 when businessDays is initalized with 'pa'", () => {
-  const bDaysObj = businessDays("pa");
+  const bDaysObj = businessDays({state: "pa"});
   const holidayList = bDaysObj.getHolidays(2020);
   expect(holidayList.length).toBe(12);
 });
@@ -137,7 +142,7 @@ test("Throw an error if input date is formatted as '27-12-2016' is provided", ()
 });
 
 test("Determine '2020-12-25' is a business day if Christmas Day is set as not a public holiday", () => {
-  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Christmas Day"]});
+  const bDaysFiltered = businessDays({state: "pa", excludeHolidays: ["Christmas Day"]});
   const xmasDay = dayjs.tz("2020-12-25", DAYJS_TIMEZONE);
   const businessDay = bDaysFiltered.check(xmasDay);
   expect(businessDay).toBe(true);
@@ -150,7 +155,7 @@ test("Determine '2019-06-14' (Flag Day) is not a business day", () => {
 })
 
 test("Determine '2019-06-14' (Flag Day) is a business day if Flag Day is excluded from holiday list", () => {
-  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Flag Day"]});
+  const bDaysFiltered = businessDays({state: "pa", excludeHolidays: ["Flag Day"]});
   const flagDay = dayjs.tz("2019-06-14", DAYJS_TIMEZONE);
   const businessDay = bDaysFiltered.check(flagDay);
   expect(businessDay).toBe(true);
@@ -272,7 +277,7 @@ test("Count days between '2020-12-23' to '2021-01-02' returns expected tallies",
 
 test("Count days between '2020-01-01' to '2020-12-31' with Christmas and Memorial Day excluded returns an array of 10 holidays", () => {
   // Sunday Dec 23, 2020 to Sat Jan 2, 2020
-  const bDaysFiltered = businessDays("pa", {excludeHolidays: ["Christmas Day", "Memorial Day"]})
+  const bDaysFiltered = businessDays({state: "pa", excludeHolidays: ["Christmas Day", "Memorial Day"]})
   const counts = bDaysFiltered.countDays("2020-01-01", "2020-12-31", {excludeInitialDate: false})
   expect(counts.holidayList.length).toBe(10);
 })
