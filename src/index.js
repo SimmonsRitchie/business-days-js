@@ -1,87 +1,22 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc"; // dependent on utc plugin
-import timezone from "dayjs/plugin/timezone";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import Holidays from "date-holidays";
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(customParseFormat);
+import {
+  validateState,
+  validateDate,
+  filterHolidays,
+  addPublicHolidays,
+} from "./utils";
 
-
-const validateState = (stateAbbrv, hd) => {
-  /**
-   * Throws error to the console if a US State abbreviation is invalid.
-   *
-   * @param {str} stateAbbrv: State abbreviation. eg "pa"
-   * @returns {undefined}
-   */
-  const stateList = Object.keys(hd.getStates("US"));
-  stateList.push("USA")
-  const stateInList = stateList.includes(stateAbbrv.toUpperCase());
-  if (!stateInList) {
-    throw `${stateAbbrv} is not a US state.`;
-  }
-}
-
-const validateDate = (inputDate) => {
-  /**
-   * Checks that provided date is in valid format and returns date as a dayjs object.
-   * 
-   * @param {string|Dayjs|Date} inputDate - date to validate
-   * @returns {Dayjs} inputDate converted into Dayjs object.
-   */
-  try {
-    inputDate = dayjs.tz(inputDate, "YYYY-MM-DD", "America/New_York");
-  } catch (e) {
-    throw (
-      ("Could not parse date. Please provide either a dayjs object, native Date object, or a string formatted as 'YYYY-MM-DD'",
-      e)
-    );
-  }
-  return inputDate;
-}
-
-const getHolidayRule = (hd, holName, year) => {
-  /**
-   * Gets the date-holiday defined 'rule' for a specific holiday. Returns empty string if name isn't found.
-   * 
-   * @param {Holidays} hd - Holidays instance
-   * @param {string} holName - name of holiday. eg. "Christmas Day"
-   * @returns {string} 
-   */
-  const holList = hd.getHolidays(year)
-  const hol = holList.find(item => {
-    return item.name.toLowerCase() === holName.toLowerCase()})
-  if (hol) {
-    return hol.rule;
-  }
-  return "";
-}
-
-const filterHolidays = (hd, arrHols) => {
-  /**
-   * Takes a Holidays instance and list of holidays and sets each holiday's type as 'optional' in the instance.
-   * 
-   * @param {Holidays} hd - Holidays instance
-   * @param {arr} arrHols - array of holiday names. eg ["Christmas Day", "New Year's Day"]
-   * @returns {undefined} 
-
-   */
-  arrHols.forEach(holName => {
-    const rule = getHolidayRule(hd, holName, "2020")
-    if (rule) {
-      hd.setHoliday(rule, {name: holName, type: "optional"})
-    }
-  })
-}
-
-const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
+const businessDays = ({
+  state = "USA",
+  excludeHolidays = [],
+  addHolidays = [],
+} = {}) => {
   /**
    * Factory function that creates a businessDays object.
    *
-   * @param {str} options.state – U.S. state to determine holidays. Eg. "pa". Defaults to "USA"
-   * @param {arr} options.excludeHolidays – list of strings with holiday names to exclude from being considered as non-business days.
+   * @param {string} options.state – U.S. state to determine holidays. Eg. "pa". Defaults to "USA"
+   * @param {Array} options.excludeHolidays – list of strings with holiday names to exclude from being considered as non-business days.
    * @returns {businessDays} businessDays object
    */
   const hd = new Holidays();
@@ -89,7 +24,10 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
   const cleanUSState = state.toLowerCase();
   hd.init("US", cleanUSState);
   if (excludeHolidays.length > 0) {
-    filterHolidays(hd, excludeHolidays)
+    filterHolidays(hd, excludeHolidays);
+  }
+  if (addHolidays.length > 0) {
+    addPublicHolidays(hd, addHolidays);
   }
   return {
     hd,
@@ -97,11 +35,13 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
     getHolidays(year) {
       /**
        * Returns an array of all public holidays for a given year.
-       * 
+       *
        * @param {string} year – year to get holidays for
-       * @returns {arr}
+       * @returns {Array}
        */
-      const publicHols = hd.getHolidays(year).filter(item => item.type === "public")
+      const publicHols = this.hd
+        .getHolidays(year)
+        .filter((item) => item.type === "public");
       return publicHols;
       // const publicHols = hols.filter(item => item.type === "public")
       // return publicHols;
@@ -126,43 +66,43 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
       }
       return true;
     },
-    addDays(inputDate, days, { excludeInitialDate=true }={}) {
+    addDays(inputDate, days, { excludeInitialDate = true } = {}) {
       /**
        * Adds business days to a date and returns a new date as a DayJS object. First date is excluded from count by default.
-       * 
+       *
        * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
        * @param {int} days - number of days to add to inputDate
-       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding. 
-       * @returns {dayjs} 
+       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
+       * @returns {dayjs}
        */
       let counter = 0;
-      inputDate = validateDate(inputDate)
+      inputDate = validateDate(inputDate);
       if (excludeInitialDate) {
-        inputDate = inputDate.add(1, 'day')
+        inputDate = inputDate.add(1, "day");
       }
       while (counter < days) {
         if (this.check(inputDate)) {
           counter++;
-        } 
+        }
         if (counter < days) {
-          inputDate = inputDate.add(1, 'day')
+          inputDate = inputDate.add(1, "day");
         }
       }
       return inputDate;
     },
-    countDays(dateStart, dateEnd, { excludeInitialDate=true }={}) {
+    countDays(dateStart, dateEnd, { excludeInitialDate = true } = {}) {
       /**
        * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
-       * 
+       *
        * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
        * @param {int} days - number of days to add to inputDate
-       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding. 
-       * @returns {dayjs} 
+       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
+       * @returns {dayjs}
        */
-      dateStart = validateDate(dateStart)
-      dateEnd = validateDate(dateEnd)
+      dateStart = validateDate(dateStart);
+      dateEnd = validateDate(dateEnd);
       if (dateStart.isAfter(dateEnd)) {
-        throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`
+        throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`;
       }
       let totalDays = 0;
       let holidays = 0;
@@ -173,29 +113,36 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
       let businessDays = 0;
       let dateCounter = dateStart;
       if (excludeInitialDate) {
-        dateCounter = dateStart.add(1, 'day')
+        dateCounter = dateStart.add(1, "day");
       }
-      while (!dateCounter.isSame(dateEnd.add(1, 'day'), 'day')) {
-        totalDays++
+      while (!dateCounter.isSame(dateEnd.add(1, "day"), "day")) {
+        totalDays++;
         const holidayObj = this.hd.isHoliday(dateCounter.toDate());
         const dayOfWeek = dateCounter.day();
         if (holidayObj && holidayObj.type === "public") {
           holidays++;
-          holidayList.push(holidayObj)
+          holidayList.push(holidayObj);
         }
-        if (dayOfWeek === 0 | dayOfWeek === 6) {
+        if ((dayOfWeek === 0) | (dayOfWeek === 6)) {
           weekendDays++;
         }
-        if (!(dayOfWeek === 0 | dayOfWeek === 6)) {
+        if (!((dayOfWeek === 0) | (dayOfWeek === 6))) {
           weekdays++;
         }
-        if ((dayOfWeek === 0 | dayOfWeek === 6) && (holidayObj && holidayObj.type === "public")) {
+        if (
+          (dayOfWeek === 0) | (dayOfWeek === 6) &&
+          holidayObj &&
+          holidayObj.type === "public"
+        ) {
           holidaysOnWeekends++;
         }
-        if (!(dayOfWeek === 0 | dayOfWeek === 6) && !(holidayObj && holidayObj.type === "public")) {
+        if (
+          !((dayOfWeek === 0) | (dayOfWeek === 6)) &&
+          !(holidayObj && holidayObj.type === "public")
+        ) {
           businessDays++;
         }
-        dateCounter = dateCounter.add(1, 'day')
+        dateCounter = dateCounter.add(1, "day");
       }
       return {
         totalDays,
@@ -206,7 +153,7 @@ const businessDays = ({state = "USA", excludeHolidays = []} = {}) => {
         holidaysOnWeekends,
         businessDays,
         nonBusinessDays: totalDays - businessDays,
-      }
+      };
     },
   };
 };
