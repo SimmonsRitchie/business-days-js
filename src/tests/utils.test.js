@@ -4,8 +4,6 @@ import dayjs from "dayjs";
 import {
   validateState,
   validateDate,
-  filterHolidays,
-  addPublicHolidays,
 } from "../utils";
 
 test("validateState throws an error when provided an invalid state", () => {
