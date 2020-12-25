@@ -153,10 +153,10 @@ const CUSTOM_HOLIDAYS = [
   },
 ]
 const bDays = businessDays({
-    state: "pa",
-    excludeHolidays: ["christmas day", "presidents' day"],
-    addHolidays: CUSTOM_HOLIDAYS_1,
-  });
+  state: "pa",
+  excludeHolidays: ["christmas day", "presidents' day"],
+  addHolidays: CUSTOM_HOLIDAYS,
+});
 ```
 
 ### Note about public holidays
