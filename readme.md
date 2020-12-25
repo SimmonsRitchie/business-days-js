@@ -15,7 +15,7 @@ npm i business-days-js
 
 ## Usage
 
-First inititalize a businessDays object:
+First initialize a businessDays object:
 
 ```
 import businessDays from "business-days-js";
@@ -122,7 +122,7 @@ bDays.getHolidays("2020")
 
 ## Advanced Usage
 
-### Customize public holidays
+### Customize holidays
 
 You can exclude specific public holidays from businessDays default list of public holidays. Simply initialize a businessDays object with a list of holidays to exclude.
 
@@ -138,7 +138,7 @@ bDays.check(flagDay) // returns true
 bDays.check(presDay) // returns true
 ```
 
-You can also add custom holidays to to the default list. Each custom holiday is an object with a 'name' property and a 'rule' property. The rule defines the occurence of the holiday based on the grammar defined by [date-holidays](https://www.npmjs.com/package/date-holidays).
+You can also add custom holidays to to the default list. Each custom holiday is an object with a 'name' property and a 'rule' property. The rule defines the occurrence of the holiday based on the grammar of [date-holidays](https://www.npmjs.com/package/date-holidays).
 
 ```
 import businessDays from "business-days-js";
@@ -160,9 +160,9 @@ const bDays = businessDays({
 });
 ```
 
-### Note about public holidays
+### About holidays
 
-By default, when inititalized without a state abbreviation, businessDays treats 10 U.S. public holidays as non-business days:
+By default, when initialized without a state abbreviation, businessDays handles 10 U.S. public holidays as non-business days:
 
 - New Year's Day
 - Martin Luther King Jr. Day
@@ -175,6 +175,6 @@ By default, when inititalized without a state abbreviation, businessDays treats 
 - Thanksgiving Day
 - Christmas Day
 
-If those days fall on a weekend, subsitution days are used based on rules defined by [date-holidays](https://www.npmjs.com/package/date-holidays). For instance, if Christmas Day (Dec 25) falls on a Sunday, then Monday will be assumed to be a public holiday. If Christmas Day falls on a Saturday than Friday will be assumed to be a public holiday.
+If those days fall on a weekend, substitution days are used based on rules defined by [date-holidays](https://www.npmjs.com/package/date-holidays). For instance, if Christmas Day (Dec 25) falls on a Sunday, then Monday will be assumed to be a public holiday. If Christmas Day falls on a Saturday than Friday will be assumed to be a public holiday.
 
 For more information about holiday rules, consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).
