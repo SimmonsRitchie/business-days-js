@@ -4,29 +4,13 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"; // dependent on utc plugin
 import timezone from "dayjs/plugin/timezone";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-
+import { CUSTOM_HOLIDAYS_1, CUSTOM_HOLIDAYS_2 } from "./fixtures";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
 const bDays = businessDays({ state: "pa" });
 const DAYJS_TIMEZONE = "America/Los_Angeles";
-const CUSTOM_HOLIDAYS_1 = [
-  {
-    rule: "02-02",
-    name: "Groundhog Day",
-  },
-];
-const CUSTOM_HOLIDAYS_2 = [
-  {
-    rule: "02-02",
-    name: "Groundhog Day",
-  },
-  {
-    rule: "06-19",
-    name: "Juneteenth",
-  },
-];
 
 // BASIC INIT
 test("Initializing businessDays without a state abbreviation returns object", () => {
