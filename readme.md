@@ -27,9 +27,9 @@ By default, businessDays treats 10 U.S. public holidays as non-business days. To
 ```
 import businessDays from "business-days-js";
 
-const bDays = businessDays({state: "pa"}); // uses public holidays for Pennsylvania
+const bDays = businessDays({state: "pa"}); // use public holidays for Pennsylvania
 ```
-Consult 'advanced usage' for more information about customizing public holidays.
+Consult 'advanced usage' for more information about customizing holidays.
 
 ### Check business day
 
@@ -76,7 +76,7 @@ const startDate = new Date("2020-12-20 00:00:00 GMT-0500");
 bDays.addDays(startDate, 5) // returns a Day.js object representing Dec 28, 2020.
 ```
 
-As with other methods, dates can be provided as a DayJS object or a string formatted as "YYYY-MM-DD":
+As with other methods, dates can be provided as a Day.js object or a string formatted as "YYYY-MM-DD":
 
 ```
 import businessDays from "business-days-js";
