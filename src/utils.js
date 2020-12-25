@@ -14,8 +14,8 @@ export const validateState = (stateAbbrv, hd) => {
    * @param {str} stateAbbrv: State abbreviation. eg "pa"
    * @returns {boolean} returns true if valid US state
    */
-  const stateList = Object.keys(hd.getStates("US"));
-  stateList.push("USA");
+  let stateList = Object.keys(hd.getStates("US"));
+  stateList = [...stateList, "US", "USA"];
   const stateInList = stateList.includes(stateAbbrv.toUpperCase());
   if (!stateInList) {
     throw `${stateAbbrv} is not a US state.`;
