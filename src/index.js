@@ -8,7 +8,7 @@ import {
 } from "./utils";
 
 const businessDays = ({
-  state = "USA",
+  state = "US",
   excludeHolidays = [],
   addHolidays = [],
 } = {}) => {
@@ -21,8 +21,12 @@ const businessDays = ({
    */
   const hd = new Holidays();
   validateState(state, hd);
-  const cleanUSState = state.toLowerCase();
-  hd.init("US", cleanUSState);
+  const cleanUSState = state.toUpperCase();
+  if (cleanUSState === "US" || cleanUSState === "USA") {
+    hd.init("US");
+  } else {
+    hd.init("US", cleanUSState);
+  }
   if (excludeHolidays.length > 0) {
     filterHolidays(hd, excludeHolidays);
   }
