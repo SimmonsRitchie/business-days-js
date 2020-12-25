@@ -71,6 +71,7 @@ Add a specified number of business days to a date to calculate a new date. The r
 ```
 import businessDays from "business-days-js";
 
+const bDays = businessDays({state: "pa"});
 const startDate = new Date("2020-12-20 00:00:00 GMT-0500");
 bDays.addDays(startDate, 5) // returns a Day.js object representing Dec 28, 2020.
 ```
