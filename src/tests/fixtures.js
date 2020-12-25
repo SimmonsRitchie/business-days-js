@@ -1,3 +1,9 @@
+export const CUSTOM_HOLIDAYS_ERROR_1 = [
+  {
+    rule: "02-02",
+  },
+]
+
 export const CUSTOM_HOLIDAYS_1 = [
   {
     rule: "02-02",

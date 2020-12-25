@@ -8,7 +8,7 @@ import {
   filterHolidays,
   addPublicHolidays
 } from "../utils";
-import { CUSTOM_HOLIDAYS_2 } from "./fixtures";
+import { CUSTOM_HOLIDAYS_2, CUSTOM_HOLIDAYS_ERROR_1 } from "./fixtures";
 
 test("validateState throws an error when provided an invalid state", () => {
   const hd = new Holidays();
@@ -54,6 +54,13 @@ test("getHolidayRule returns correct date-holiday rule for Presidents' Day", () 
   expect(result).toBe(expectedRule);
 });
 
+test("getHolidayRule returns empty string when provided invalid holiday name", () => {
+  const hd = new Holidays("US", "pa");
+  const result = getHolidayRule(hd, "NOT A REAL HOLIDAY", 2020);
+  const expectedRule = "";
+  expect(result).toBe(expectedRule);
+});
+
 test("filterHolidays sets Christmas Day and Flag Day as optional on Holidays instance", () => {
   const hd = new Holidays("US", "pa");
   filterHolidays(hd, ["Christmas Day", "Flag Day"]);
@@ -71,7 +78,7 @@ test("filterHolidays sets Christmas Day and Flag Day as optional on Holidays ins
   expect(publicHols).not.toContain("flag day");
 });
 
-test("addPublicHolidays adds Juneteenth", () => {
+test("addPublicHolidays adds Juneteenth and Groundhog Day", () => {
   const hd = new Holidays("US", "pa");
   addPublicHolidays(hd, CUSTOM_HOLIDAYS_2);
   const publicHols = hd
@@ -80,4 +87,12 @@ test("addPublicHolidays adds Juneteenth", () => {
     .map((item) => item.name.toLowerCase());
   expect(publicHols).toContain("groundhog day");
   expect(publicHols).toContain("juneteenth");
+});
+
+
+test("addPublicHolidays throws an error when no holiday name is provided", () => {
+  expect(() => {
+    const hd = new Holidays("US");
+    addPublicHolidays(hd, CUSTOM_HOLIDAYS_ERROR_1);
+  }).toThrow();
 });
