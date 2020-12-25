@@ -7,13 +7,13 @@ Determines whether a given date and time is on a weekend or a public holiday in 
 
 This package uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
-### Install
+## Install
 
 ```
 npm i business-days-js
 ```
 
-### Usage
+## Usage
 
 First inititalize a businessDays object:
 
@@ -31,7 +31,7 @@ const bDays = businessDays({state: "pa"}); // uses public holidays for Pennsylva
 ```
 Consult 'advanced usage' for more information about customizing public holidays.
 
-##### Check business day
+### Check business day
 
 To check whether a native Date object is a business day:
 
@@ -64,7 +64,7 @@ const xmasDay = dayjs("2020-12-25 00:00:00 GMT-0500"); // 12 a.m. on Dec 25, 202
 bDays.check(xmasDay); // returns false
 ```
 
-##### Add business days 
+### Add business days 
 
 Add a specified number of business days to a date to calculate a new date. The returned date is a Day.js object.
 
@@ -84,7 +84,7 @@ const bDays = businessDays({state: "pa"});
 const newDate = bDays.addDays("2020-12-20", 5) // returns a Day.js object representing Dec 28, 2020.
 ```
 
-##### Count days
+### Count days
 
 To return an object with a tally of total days, business days, weekends, weekdays, and holidays between two dates:
 
@@ -106,7 +106,7 @@ const bDays = businessDays({state: "pa"});
 bDays.countDays("2020-12-20", "2020-12-28", {excludeInitialDate: false})
 ```
 
-##### Get list of public holidays
+### Get list of public holidays
 
 To get a list of public holidays for a specific year with the dates they end and start:
 
@@ -119,9 +119,9 @@ bDays.getHolidays("2020")
 
 ```
 
-### Advanced Usage
+## Advanced Usage
 
-##### Customize public holidays
+### Customize public holidays
 
 You can exclude specific public holidays from businessDays default list of public holidays. Simply initialize a businessDays object with a list of holidays to exclude.
 
@@ -135,6 +135,28 @@ const flagDay = new Date("2019-06-14 00:00:00 GMT-0500")
 const presDay = new Date("2020-02-17 00:00:00 GMT-0500")
 bDays.check(flagDay) // returns true
 bDays.check(presDay) // returns true
+```
+
+You can also add custom holidays to to the default list. Each custom holiday is an object with a 'name' property and a 'rule' property. The rule defines the occurence of the holiday based on the grammar defined by [date-holidays](https://www.npmjs.com/package/date-holidays).
+
+```
+import businessDays from "business-days-js";
+
+const CUSTOM_HOLIDAYS = [{
+  {
+    rule: "02-02",
+    name: "Groundhog Day",
+  },
+  {
+    rule: "06-19",
+    name: "Juneteenth",
+  },
+}]
+const bDaysObj = businessDays({
+    state: "pa",
+    excludeHolidays: ["christmas day", "presidents' day"],
+    addHolidays: CUSTOM_HOLIDAYS_1,
+  });
 ```
 
 ### Note about public holidays
