@@ -142,7 +142,7 @@ You can also add custom holidays to to the default list. Each custom holiday is 
 ```
 import businessDays from "business-days-js";
 
-const CUSTOM_HOLIDAYS = [{
+const CUSTOM_HOLIDAYS = [
   {
     rule: "02-02",
     name: "Groundhog Day",
@@ -151,8 +151,8 @@ const CUSTOM_HOLIDAYS = [{
     rule: "06-19",
     name: "Juneteenth",
   },
-}]
-const bDaysObj = businessDays({
+]
+const bDays = businessDays({
     state: "pa",
     excludeHolidays: ["christmas day", "presidents' day"],
     addHolidays: CUSTOM_HOLIDAYS_1,
