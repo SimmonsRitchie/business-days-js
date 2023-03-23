@@ -7,18 +7,18 @@ import {
   addPublicHolidays,
 } from "./utils";
 
+/**
+ * Factory function that creates a businessDays object.
+ *
+ * @param {string} options.state – U.S. state to determine holidays. Eg. "pa". Defaults to "USA"
+ * @param {Array} options.excludeHolidays – list of strings with holiday names to exclude from being considered as non-business days.
+ * @returns {businessDays} businessDays object
+ */
 const businessDays = ({
   state = "US",
   excludeHolidays = [],
   addHolidays = [],
 } = {}) => {
-  /**
-   * Factory function that creates a businessDays object.
-   *
-   * @param {string} options.state – U.S. state to determine holidays. Eg. "pa". Defaults to "USA"
-   * @param {Array} options.excludeHolidays – list of strings with holiday names to exclude from being considered as non-business days.
-   * @returns {businessDays} businessDays object
-   */
   const hd = new Holidays();
   validateState(state, hd);
   const cleanUSState = state.toUpperCase();
@@ -36,13 +36,13 @@ const businessDays = ({
   return {
     hd,
     USState: cleanUSState,
+    /**
+     * Returns an array of all public holidays for a given year.
+     *
+     * @param {string} year – year to get holidays for
+     * @returns {Array}
+     */
     getHolidays(year) {
-      /**
-       * Returns an array of all public holidays for a given year.
-       *
-       * @param {string} year – year to get holidays for
-       * @returns {Array}
-       */
       const publicHols = this.hd
         .getHolidays(year)
         .filter((item) => item.type === "public");
@@ -50,13 +50,13 @@ const businessDays = ({
       // const publicHols = hols.filter(item => item.type === "public")
       // return publicHols;
     },
+    /**
+     * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
+     *
+     * @param {string|Dayjs|Date} inputDate - date to check.
+     * @returns {bool} true if inputDate is a weekend or holiday
+     */
     check(inputDate) {
-      /**
-       * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
-       *
-       * @param {string|Dayjs|Date} inputDate - date to check.
-       * @returns {bool} true if inputDate is a weekend or holiday
-       */
       inputDate = validateDate(inputDate);
       // Check if Sun (0) or Sat (6)
       const dayOfWeek = inputDate.day();
@@ -70,15 +70,15 @@ const businessDays = ({
       }
       return true;
     },
+    /**
+     * Adds business days to a date and returns a new date as a DayJS object. First date is excluded from count by default.
+     *
+     * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
+     * @param {int} days - number of days to add to inputDate
+     * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
+     * @returns {dayjs}
+     */
     addDays(inputDate, days, { excludeInitialDate = true } = {}) {
-      /**
-       * Adds business days to a date and returns a new date as a DayJS object. First date is excluded from count by default.
-       *
-       * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
-       * @param {int} days - number of days to add to inputDate
-       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
-       * @returns {dayjs}
-       */
       let counter = 0;
       inputDate = validateDate(inputDate);
       if (excludeInitialDate) {
@@ -94,15 +94,15 @@ const businessDays = ({
       }
       return inputDate;
     },
+    /**
+     * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
+     *
+     * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
+     * @param {int} days - number of days to add to inputDate
+     * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
+     * @returns {dayjs}
+     */
     countDays(dateStart, dateEnd, { excludeInitialDate = true } = {}) {
-      /**
-       * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
-       *
-       * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
-       * @param {int} days - number of days to add to inputDate
-       * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
-       * @returns {dayjs}
-       */
       dateStart = validateDate(dateStart);
       dateEnd = validateDate(dateEnd);
       if (dateStart.isAfter(dateEnd)) {
