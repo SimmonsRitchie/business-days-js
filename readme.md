@@ -178,3 +178,9 @@ By default, when initialized without a state abbreviation, businessDays handles 
 If those days fall on a weekend, substitution days are used based on rules defined by [date-holidays](https://www.npmjs.com/package/date-holidays). For instance, if Christmas Day (Dec 25) falls on a Sunday, then Monday will be assumed to be a public holiday. If Christmas Day falls on a Saturday than Friday will be assumed to be a public holiday.
 
 For more information about holiday rules, consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).
+
+### Notes
+If you find any bugs or have any suggestions for improvements, please feel free to open an issue or submit a pull request. Contributions are welcome!
+
+### License
+business-days-js is licensed under the MIT License. See the LICENSE file for more information.
