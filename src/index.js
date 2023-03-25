@@ -64,8 +64,8 @@ const businessDays = ({
         return false;
       }
       // Check if public holiday or substitute public holiday
-      const holidayObj = this.hd.isHoliday(inputDate.toDate());
-      if (holidayObj && holidayObj.type === "public") {
+      const holidayArr = this.hd.isHoliday(inputDate.toDate());
+      if (holidayArr && holidayArr[0].type === "public") {
         return false;
       }
       return true;
@@ -121,11 +121,11 @@ const businessDays = ({
       }
       while (!dateCounter.isSame(dateEnd.add(1, "day"), "day")) {
         totalDays++;
-        const holidayObj = this.hd.isHoliday(dateCounter.toDate());
+        const holidayArr = this.hd.isHoliday(dateCounter.toDate());
         const dayOfWeek = dateCounter.day();
-        if (holidayObj && holidayObj.type === "public") {
+        if (holidayArr && holidayArr[0].type === "public") {
           holidays++;
-          holidayList.push(holidayObj);
+          holidayList.push(holidayArr[0]);
         }
         if ((dayOfWeek === 0) | (dayOfWeek === 6)) {
           weekendDays++;
@@ -135,14 +135,14 @@ const businessDays = ({
         }
         if (
           (dayOfWeek === 0) | (dayOfWeek === 6) &&
-          holidayObj &&
-          holidayObj.type === "public"
+          holidayArr &&
+          holidayArr[0].type === "public"
         ) {
           holidaysOnWeekends++;
         }
         if (
           !((dayOfWeek === 0) | (dayOfWeek === 6)) &&
-          !(holidayObj && holidayObj.type === "public")
+          !(holidayArr && holidayArr[0].type === "public")
         ) {
           businessDays++;
         }

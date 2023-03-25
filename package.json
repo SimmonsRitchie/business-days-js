@@ -11,7 +11,7 @@
   "module": "dist/index.module.js",
   "unpkg": "dist/index.umd.js",
   "dependencies": {
-    "date-holidays": "^1.8.3",
+    "date-holidays": "^3.19.0",
     "dayjs": "^1.9.6"
   },
   "devDependencies": {
