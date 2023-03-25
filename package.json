@@ -1,6 +1,6 @@
 {
   "name": "business-days-js",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Checks whether a date is on a weekend or a U.S. holiday",
   "source": "src/index.js",
   "exports": {
