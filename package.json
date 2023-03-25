@@ -8,8 +8,7 @@
   "unpkg": "dist/index.umd.js",
   "dependencies": {
     "date-holidays": "^1.8.3",
-    "dayjs": "^1.9.6",
-    "dayjs-business-days": "^1.0.4"
+    "dayjs": "^1.9.6"
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
