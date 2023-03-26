@@ -40,16 +40,28 @@ test("getHolidays returns an array", () => {
   expect(Array.isArray(holidayList)).toBe(true);
 });
 
-test("getHolidays returns 11 public holidays in 2020 when businessDays is initalized without state abbreviation", () => {
+test("getHolidays returns 10 public holidays in 2020 when businessDays is initalized without state abbreviation", () => {
   const bDaysObj = businessDays();
   const holidayList = bDaysObj.getHolidays(2020);
-  expect(holidayList.length).toBe(11);
+  expect(holidayList.length).toBe(11); // list includes substitution for Independence Day
+  const holsNoSubs = holidayList.filter((item) => !item.substitute);
+  expect(holsNoSubs.length).toBe(10);
 });
 
-test("getHolidays returns 12 public holidays in 2020 when businessDays is initalized with 'pa'", () => {
+test("getHolidays returns 11 public holidays in 2022 when businessDays is initalized without state abbreviation", () => {
+  // Juneteenth was added as a public holiday in 2021, bringing the number of federal holidays to 11
+  const bDaysObj = businessDays();
+  const holidayList = bDaysObj.getHolidays(2022);
+  const holsNoSubs = holidayList.filter((item) => !item.substitute);
+  expect(holsNoSubs.length).toBe(11);
+});
+
+test("getHolidays returns 12 public holidays in 2022 when businessDays is configured for Pennsylvania", () => {
+  // Pennsylvania considers Flag Day (06-14) a public holiday in addition to the 11 federal holidays
   const bDaysObj = businessDays({ state: "pa" });
-  const holidayList = bDaysObj.getHolidays(2020);
-  expect(holidayList.length).toBe(12);
+  const holidayList = bDaysObj.getHolidays(2022);
+  const holsNoSubs = holidayList.filter((item) => !item.substitute);
+  expect(holsNoSubs.length).toBe(12);
 });
 
 // CHECK DAYS
@@ -318,19 +330,20 @@ test("Add Groundhog Day to public holiday list", () => {
   expect(bDaysObj.check(groundhogDay2018)).toBe(false);
 });
 
-test("Add Groundhog Day and Juneteenth to public holiday list", () => {
+test("Add Groundhog Day and Saint Swithin's Day to public holiday list for Pa.", () => {
   const bDaysObj = businessDays({
     state: "pa",
     addHolidays: CUSTOM_HOLIDAYS_2,
   });
-  const holidayList = bDaysObj.getHolidays(2018);
-  const holidayListClean = holidayList.map((item) => item.name.toLowerCase());
+  const holidayList = bDaysObj.getHolidays(2023);
+  const holidayListClean = holidayList.filter(item => !item.substitute).map((item) => item.name.toLowerCase());
   expect(holidayListClean).toContain("groundhog day");
-  expect(holidayListClean.length).toBe(13);
-  const groundhogDay2018 = "2018-02-02"; // Friday, Feb 2, 2018
-  const juneteenth2018 = "2018-06-19"; // Tues, June 19, 2018
-  expect(bDaysObj.check(groundhogDay2018)).toBe(false);
-  expect(bDaysObj.check(juneteenth2018)).toBe(false);
+  expect(holidayListClean).toContain("saint swithin's day");
+  expect(holidayListClean.length).toBe(14);
+  const groundhogDay2023 = "2023-02-02"; // February 2, 2023
+  const juneteenth2023 = "2023-07-15"; // July 15, 2023
+  expect(bDaysObj.check(groundhogDay2023)).toBe(false);
+  expect(bDaysObj.check(juneteenth2023)).toBe(false);
 });
 
 test("Add Groundhog Day and exclude Christmas Day and Presidents' Day", () => {

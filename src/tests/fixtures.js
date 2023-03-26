@@ -16,7 +16,7 @@ export const CUSTOM_HOLIDAYS_2 = [
     name: "Groundhog Day",
   },
   {
-    rule: "06-19",
-    name: "Juneteenth",
+    rule: "07-15",
+    name: "Saint Swithin's Day",
   },
 ];
