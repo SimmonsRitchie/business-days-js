@@ -22,7 +22,7 @@ import businessDays from "business-days-js";
 
 const bDays = businessDays();
 ```
-By default, businessDays treats 10 U.S. public holidays as non-business days. To use state-specific public holidays, instead initialize businessDays with an appropriate two-letter state abbreviation:
+By default, businessDays treats 11 U.S. public holidays as non-business days. To use state-specific public holidays, instead initialize businessDays with an appropriate two-letter state abbreviation:
 
 ```
 import businessDays from "business-days-js";
@@ -149,8 +149,8 @@ const CUSTOM_HOLIDAYS = [
     name: "Groundhog Day",
   },
   {
-    rule: "06-19",
-    name: "Juneteenth",
+    rule: "07-15",
+    name: "Saint Swithin's Day",
   },
 ]
 const bDays = businessDays({
@@ -164,12 +164,13 @@ const bDays = businessDays({
 
 ### Holidays and substitution days
 
-By default, when initialized without a state abbreviation, businessDays handles 10 U.S. public holidays as non-business days:
+By default, when initialized without a state abbreviation, businessDays hnadles the following 11 U.S. public holidays as non-business days:
 
 - New Year's Day
 - Martin Luther King Jr. Day
 - Washington's Birthday
 - Memorial Day
+- Juneteenth
 - Independence Day
 - Labor Day
 - Columbus Day
