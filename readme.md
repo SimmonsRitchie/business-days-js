@@ -162,7 +162,7 @@ const bDays = businessDays({
 
 ## Notes
 
-### About holidays
+### Holidays and substitution days
 
 By default, when initialized without a state abbreviation, businessDays handles 10 U.S. public holidays as non-business days:
 
