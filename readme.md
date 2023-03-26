@@ -160,6 +160,8 @@ const bDays = businessDays({
 });
 ```
 
+## Notes
+
 ### About holidays
 
 By default, when initialized without a state abbreviation, businessDays handles 10 U.S. public holidays as non-business days:
@@ -179,7 +181,7 @@ If those days fall on a weekend, substitution days are used based on rules defin
 
 For more information about holiday rules, consult the documentation for [date-holidays](https://www.npmjs.com/package/date-holidays).
 
-### Notes
+### Contributions
 If you find any bugs or have any suggestions for improvements, please feel free to open an issue or submit a pull request. Contributions are welcome!
 
 ### License
