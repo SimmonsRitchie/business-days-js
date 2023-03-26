@@ -1,5 +1,5 @@
 import Holidays from "date-holidays";
-
+import dayjs from "dayjs";
 import {
   validateState,
   validateDate,
@@ -37,12 +37,12 @@ const businessDays = ({
     hd,
     USState: cleanUSState,
     /**
-     * Returns an array of all public holidays for a given year.
+     * Returns an array of all public holidays for a given year. 
      *
-     * @param {string} year – year to get holidays for
+     * @param {string | number | Date} year – year to get holidays for. Defaults to current year if not provided.
      * @returns {Array}
      */
-    getHolidays(year) {
+    getHolidays(year?: string | number | Date) {
       const publicHols = this.hd
         .getHolidays(year)
         .filter((item) => item.type === "public");
@@ -53,18 +53,18 @@ const businessDays = ({
     /**
      * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
      *
-     * @param {string|Dayjs|Date} inputDate - date to check.
+     * @param {string | Date | dayjs.Dayjs} inputDate - date to check.
      * @returns {bool} true if inputDate is a weekend or holiday
      */
-    check(inputDate) {
-      inputDate = validateDate(inputDate);
+    check(inputDate: string | Date | dayjs.Dayjs) {
+      const dayJsObj: dayjs.Dayjs = validateDate(inputDate);
       // Check if Sun (0) or Sat (6)
-      const dayOfWeek = inputDate.day();
+      const dayOfWeek = dayJsObj.day();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         return false;
       }
       // Check if public holiday or substitute public holiday
-      const holidayArr = this.hd.isHoliday(inputDate.toDate());
+      const holidayArr = this.hd.isHoliday(dayJsObj.toDate());
       if (holidayArr && holidayArr[0].type === "public") {
         return false;
       }
@@ -73,39 +73,39 @@ const businessDays = ({
     /**
      * Adds business days to a date and returns a new date as a DayJS object. First date is excluded from count by default.
      *
-     * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
-     * @param {int} days - number of days to add to inputDate
+     * @param {string | Date | dayjs.Dayjs} inputDate - a date to begin calculation from.
+     * @param {number} days - number of days to add to inputDate
      * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
      * @returns {dayjs}
      */
-    addDays(inputDate, days, { excludeInitialDate = true } = {}) {
+    addDays(inputDate: string | Date | dayjs.Dayjs, days: number, { excludeInitialDate = true } = {}) {
       let counter = 0;
-      inputDate = validateDate(inputDate);
+      let dayJsObj: dayjs.Dayjs = validateDate(inputDate);
       if (excludeInitialDate) {
-        inputDate = inputDate.add(1, "day");
+        dayJsObj = dayJsObj.add(1, "day");
       }
       while (counter < days) {
-        if (this.check(inputDate)) {
+        if (this.check(dayJsObj)) {
           counter++;
         }
         if (counter < days) {
-          inputDate = inputDate.add(1, "day");
+          dayJsObj = dayJsObj.add(1, "day");
         }
       }
-      return inputDate;
+      return dayJsObj;
     },
     /**
      * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
      *
-     * @param {string|Dayjs|Date} inputDate - a date to begin calculation from.
-     * @param {int} days - number of days to add to inputDate
+     * @param {string | Date | dayjs.Dayjs} dateStart - a date to begin calculation from.
+     * @param {string | Date | dayjs.Dayjs} dateEnd - a date to begin calculation from.
      * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
      * @returns {dayjs}
      */
-    countDays(dateStart, dateEnd, { excludeInitialDate = true } = {}) {
-      dateStart = validateDate(dateStart);
-      dateEnd = validateDate(dateEnd);
-      if (dateStart.isAfter(dateEnd)) {
+    countDays(dateStart: string | Date | dayjs.Dayjs, dateEnd: string | Date | dayjs.Dayjs, { excludeInitialDate = true } = {}) {
+      const dayJsStart: dayjs.Dayjs = validateDate(dateStart);
+      const dayJsEnd: dayjs.Dayjs = validateDate(dateEnd);
+      if (dayJsStart.isAfter(dateEnd)) {
         throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`;
       }
       let totalDays = 0;
@@ -115,11 +115,11 @@ const businessDays = ({
       let weekdays = 0;
       let holidaysOnWeekends = 0;
       let businessDays = 0;
-      let dateCounter = dateStart;
+      let dateCounter = dayJsStart.clone();
       if (excludeInitialDate) {
-        dateCounter = dateStart.add(1, "day");
+        dateCounter = dayJsStart.add(1, "day");
       }
-      while (!dateCounter.isSame(dateEnd.add(1, "day"), "day")) {
+      while (!dateCounter.isSame(dayJsEnd.add(1, "day"), "day")) {
         totalDays++;
         const holidayArr = this.hd.isHoliday(dateCounter.toDate());
         const dayOfWeek = dateCounter.day();
