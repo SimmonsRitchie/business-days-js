@@ -127,21 +127,21 @@ const businessDays = ({
           holidays++;
           holidayList.push(holidayArr[0]);
         }
-        if ((dayOfWeek === 0) | (dayOfWeek === 6)) {
+        if ((dayOfWeek === 0) || (dayOfWeek === 6)) {
           weekendDays++;
         }
-        if (!((dayOfWeek === 0) | (dayOfWeek === 6))) {
+        if (!((dayOfWeek === 0) || (dayOfWeek === 6))) {
           weekdays++;
         }
         if (
-          (dayOfWeek === 0) | (dayOfWeek === 6) &&
-          holidayArr &&
-          holidayArr[0].type === "public"
+          ((dayOfWeek === 0) || (dayOfWeek === 6)) &&
+          (holidayArr &&
+          holidayArr[0].type === "public")
         ) {
           holidaysOnWeekends++;
         }
         if (
-          !((dayOfWeek === 0) | (dayOfWeek === 6)) &&
+          !((dayOfWeek === 0) || (dayOfWeek === 6)) &&
           !(holidayArr && holidayArr[0].type === "public")
         ) {
           businessDays++;
