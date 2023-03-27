@@ -2,6 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/business-days-js)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/business-days-js)
+![NPM](https://img.shields.io/npm/l/business-days-js?color=blue)
 
 Determines whether a given date and time is on a weekend or a public holiday in the U.S. Can also add business days to a specified date to calculate a new date.
 
