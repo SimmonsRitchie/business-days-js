@@ -7,13 +7,13 @@ Determines whether a given date and time is on a weekend or a public holiday in 
 
 This package uses [dayjs](https://www.npmjs.com/package/dayjs) and [date-holidays](https://www.npmjs.com/package/date-holidays).
 
-## Install
+## 📚 Install
 
 ```
 npm i business-days-js
 ```
 
-## Usage
+## 📚 Usage
 
 First initialize a businessDays object:
 
@@ -120,7 +120,7 @@ bDays.getHolidays("2020")
 
 ```
 
-## Advanced Usage
+## 📚 Advanced Usage
 
 ### Customize holidays
 
@@ -160,7 +160,7 @@ const bDays = businessDays({
 });
 ```
 
-## Notes
+## 📚 Notes
 
 ### Holidays and substitution days
 
