@@ -1,4 +1,4 @@
-# business-days-js
+# 💼 business-days-js
 
 ![npm](https://img.shields.io/npm/v/business-days-js)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/business-days-js)
