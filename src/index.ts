@@ -47,8 +47,6 @@ const businessDays = ({
         .getHolidays(year)
         .filter((item) => item.type === "public");
       return publicHols;
-      // const publicHols = hols.filter(item => item.type === "public")
-      // return publicHols;
     },
     /**
      * Returns false if input date is on a weekend or a public holiday in Pennsylvania, USA.
