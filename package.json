@@ -23,7 +23,7 @@
     "typescript": "^5.0.2"
   },
   "scripts": {
-    "build": "microbundle --name getPkg",
+    "build": "microbundle --name getPkg --visualize",
     "dev": "microbundle watch",
     "test": "jest",
     "coverage": "jest --coverage",
