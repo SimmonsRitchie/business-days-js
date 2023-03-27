@@ -29,7 +29,7 @@ import businessDays from "business-days-js";
 
 const bDays = businessDays({state: "pa"}); // use public holidays for Pennsylvania
 ```
-Consult 'advanced usage' for more information about customizing holidays.
+Check out the docs for [date-holidays](https://github.com/commenthol/date-holidays#supported-countries-states-regions) for a full list of state abbreviations. Consult 'advanced usage' in this README for more information about customizing holidays.
 
 ### Check business day
 
