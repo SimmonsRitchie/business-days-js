@@ -164,7 +164,7 @@ const bDays = businessDays({
 
 ### Holidays and substitution days
 
-By default, when initialized without a state abbreviation, businessDays hnadles the following 11 U.S. public holidays as non-business days:
+By default, when initialized without a state abbreviation, businessDays handles the following 11 U.S. public holidays as non-business days:
 
 - New Year's Day
 - Martin Luther King Jr. Day
