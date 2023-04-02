@@ -1,6 +1,6 @@
 {
   "name": "business-days-js",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Checks whether a date is on a weekend or a U.S. holiday",
   "source": "src/index.ts",
   "main": "dist/index.umd.js",
