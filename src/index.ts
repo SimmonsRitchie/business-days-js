@@ -2,6 +2,7 @@ import Holidays from "date-holidays";
 import dayjs from "dayjs";
 import {
   validateState,
+  validateCountry,
   validateDate,
   filterHolidays,
   addPublicHolidays,
@@ -15,14 +16,20 @@ import {
  * @returns {businessDays} businessDays object
  */
 const businessDays = ({
+  country = "US",
   state = "US",
   excludeHolidays = [],
   addHolidays = [],
 } = {}) => {
   const hd = new Holidays();
-  validateState(state, hd);
+
+  if (country === "US")validateState(state, hd);
+  else validateCountry(country, hd);
+
   const cleanUSState = state.toUpperCase();
-  if (cleanUSState === "US" || cleanUSState === "USA") {
+  if (country !== "US") {
+    hd.init(country);
+  } else if (cleanUSState === "US" || cleanUSState === "USA") {
     hd.init("US");
   } else {
     hd.init("US", cleanUSState);
@@ -105,7 +112,7 @@ const businessDays = ({
     countDays(dateStart: string | Date | dayjs.Dayjs, dateEnd: string | Date | dayjs.Dayjs, { excludeInitialDate = true } = {}) {
       const dayJsStart: dayjs.Dayjs = validateDate(dateStart);
       const dayJsEnd: dayjs.Dayjs = validateDate(dateEnd);
-      if (dayJsStart.isAfter(dateEnd)) {
+      if (dayJsStart.isAfter(dayJsEnd)) {
         throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`;
       }
       let totalDays = 0;

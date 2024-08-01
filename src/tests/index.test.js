@@ -28,6 +28,12 @@ test("Initializing businessDays with a state abbreviation returns object", () =>
   expect(typeof bDaysObj === "object").toBe(true);
 });
 
+test("Initializing businessDays with a country abbreviation returns object", () => {
+  const bDaysObj = businessDays({ country: "AR" });
+  expect(typeof bDaysObj === "object").toBe(true);
+});
+
+
 test("Initializing businessDays with an invalid state abbreviation throws an error", () => {
   expect(() => {
     businessDays({ state: "NZ" });
@@ -62,6 +68,14 @@ test("getHolidays returns 12 public holidays in 2022 when businessDays is config
   const holidayList = bDaysObj.getHolidays(2022);
   const holsNoSubs = holidayList.filter((item) => !item.substitute);
   expect(holsNoSubs.length).toBe(12);
+});
+
+test("getHolidays returns 12 public holidays in 2022 when businessDays is configured for country Argentina", () => {
+  // Pennsylvania considers Flag Day (06-14) a public holiday in addition to the 11 federal holidays
+  const bDaysObj = businessDays({ country: "AR" });
+  const holidayList = bDaysObj.getHolidays(2022);
+  const holsNoSubs = holidayList.filter((item) => !item.substitute);
+  expect(holsNoSubs.length).toBe(20);
 });
 
 // CHECK DAYS

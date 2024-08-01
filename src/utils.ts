@@ -27,6 +27,23 @@ export const validateState = (stateAbbrv: string, hd: Holidays): boolean => {
 };
 
 /**
+ * Throws error to the console if a Country abbreviation is invalid, otherwise returns true
+ *
+ * @param {string} countrybbrv: Country abbreviation. eg "AR"
+ * @param {Holidays} hd: date-holidays instance
+ * @returns {boolean} returns true if valid country
+ */
+export const validateCountry = (countrybbrv: string, hd: Holidays): boolean => {
+  const countriesList = Object.keys(hd.getCountries());
+  const countryInList = countriesList.includes(countrybbrv.toUpperCase());
+  if (!countryInList) {
+    throw `${countrybbrv} is not a valid Country Code.`;
+  }
+  return true;
+};
+
+
+/**
  * Checks that provided date is in valid format and returns date as a dayjs object.
  *
  * @param {string| Date | dayjs.Dayjs} inputDate - date to validate

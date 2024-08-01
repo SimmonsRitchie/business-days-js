@@ -2,6 +2,7 @@
 import Holidays from "date-holidays";
 import dayjs from "dayjs";
 import {
+  validateCountry,
   validateState,
   validateDate,
   getHolidayRule,
@@ -26,6 +27,24 @@ test("validateState returns true when provided valid states", () => {
   expect(wv).toBe(true);
   expect(mo).toBe(true);
 });
+
+test("validateCoutry throws an error when provided an invalid state", () => {
+  const hd = new Holidays();
+  expect(() => {
+    validateCountry("XX", hd);
+  }).toThrow();
+});
+
+test("validateCoutry returns true when provided valid states", () => {
+  const hd = new Holidays();
+  const ar = validateCountry("AR", hd);
+  const cl = validateCountry("CL", hd);
+  const uy = validateCountry("UY", hd);
+  expect(ar).toBe(true);
+  expect(cl).toBe(true);
+  expect(uy).toBe(true);
+});
+
 
 test("validateDate throws an error when provided an invalid date", () => {
   expect(() => {
